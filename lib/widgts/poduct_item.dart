@@ -33,12 +33,12 @@ class ProductItem extends StatelessWidget {
                   color: Theme.of(context).accentColor,
                   borderRadius: BorderRadius.circular(20)),
               child: FadeInImage(
-                fit: BoxFit.cover,
+                fit: BoxFit.fill,
                 image: NetworkImage(
                   productImage,
                 ),
                 placeholder: AssetImage('assets/images/plant_outline_dark.png'),
-              ) //Image.asset('assets/images/plant_outline.png',fit: BoxFit.cover,),
+              ),
               ),
           Positioned(
             left: deviceWidth * .02,
