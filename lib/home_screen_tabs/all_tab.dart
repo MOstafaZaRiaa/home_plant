@@ -13,7 +13,6 @@ class AllTab extends StatelessWidget {
       child: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('products')
-            .doc(user.uid)
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -21,6 +20,7 @@ class AllTab extends StatelessWidget {
               child: CircularProgressIndicator(),
             );
           }
+          final products = snapshot.data.docs;
           return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -39,12 +39,12 @@ class AllTab extends StatelessWidget {
                       width: deviceWidth * 0.3,
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
-                        itemCount: 10,
+                        itemCount: products.length,
                         itemBuilder: (BuildContext context, int index) =>
                             ProductItem(
-                          productName: snapshot.data['productName'],
-                          productPrice: snapshot.data['productPrice'],
-                          productImage: snapshot.data['image_url'],
+                          productName: products[index]['productName'],
+                          productPrice: products[index]['productPrice'],
+                          productImage: products[index]['image_url'],
                         ),
                       ),
                     ),
