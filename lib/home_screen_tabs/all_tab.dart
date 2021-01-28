@@ -11,9 +11,7 @@ class AllTab extends StatelessWidget {
     final deviceWidth = MediaQuery.of(context).size.width;
     return SingleChildScrollView(
       child: StreamBuilder(
-        stream: FirebaseFirestore.instance
-            .collection('products')
-            .snapshots(),
+        stream: FirebaseFirestore.instance.collection('products').snapshots(),
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
@@ -35,7 +33,7 @@ class AllTab extends StatelessWidget {
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     Container(
-                      height: deviceHeight * 0.23,
+                      height: deviceHeight * 0.24,
                       width: deviceWidth * 0.3,
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
@@ -51,84 +49,87 @@ class AllTab extends StatelessWidget {
                   ],
                 ),
               ),
-              Container(
-                margin: EdgeInsets.all(deviceWidth * 0.01),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Sale',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    Container(
-                      height: deviceHeight * 0.23,
-                      width: deviceWidth * 0.3,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: 10,
-                        itemBuilder: (BuildContext context, int index) =>
-                            ProductItem(productName: snapshot.data['productName'],
-                              productPrice: snapshot.data['productPrice'],
-                              productImage: snapshot.data['image_url'],
-                            ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.all(deviceWidth * 0.01),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Flowers',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    Container(
-                      height: deviceHeight * 0.23,
-                      width: deviceWidth * 0.3,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: 10,
-                        itemBuilder: (BuildContext context, int index) =>
-                            ProductItem(productName: snapshot.data['productName'],
-                              productPrice: snapshot.data['productPrice'],
-                              productImage: snapshot.data['image_url'],
-                            ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.all(deviceWidth * 0.01),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Best seller',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    Container(
-                      height: deviceHeight * 0.23,
-                      width: deviceWidth * 0.3,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: 10,
-                        itemBuilder: (BuildContext context, int index) =>
-                            ProductItem(productName: snapshot.data['productName'],
-                              productPrice: snapshot.data['productPrice'],
-                              productImage: snapshot.data['image_url'],
-                            ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              // Container(
+              //   margin: EdgeInsets.all(deviceWidth * 0.01),
+              //   child: Column(
+              //     crossAxisAlignment: CrossAxisAlignment.stretch,
+              //     mainAxisAlignment: MainAxisAlignment.start,
+              //     children: [
+              //       Text(
+              //         'Sale',
+              //         style: TextStyle(fontWeight: FontWeight.bold),
+              //       ),
+              //       Container(
+              //         height: deviceHeight * 0.23,
+              //         width: deviceWidth * 0.3,
+              //         child: ListView.builder(
+              //           scrollDirection: Axis.horizontal,
+              //           itemCount: 10,
+              //           itemBuilder: (BuildContext context, int index) =>
+              //               ProductItem(
+              //             productName: snapshot.data['productName'],
+              //             productPrice: snapshot.data['productPrice'],
+              //             productImage: snapshot.data['image_url'],
+              //           ),
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
+              // Container(
+              //   margin: EdgeInsets.all(deviceWidth * 0.01),
+              //   child: Column(
+              //     crossAxisAlignment: CrossAxisAlignment.stretch,
+              //     mainAxisAlignment: MainAxisAlignment.start,
+              //     children: [
+              //       Text(
+              //         'Flowers',
+              //         style: TextStyle(fontWeight: FontWeight.bold),
+              //       ),
+              //       Container(
+              //         height: deviceHeight * 0.23,
+              //         width: deviceWidth * 0.3,
+              //         child: ListView.builder(
+              //           scrollDirection: Axis.horizontal,
+              //           itemCount: 10,
+              //           itemBuilder: (BuildContext context, int index) =>
+              //               ProductItem(
+              //             productName: snapshot.data['productName'],
+              //             productPrice: snapshot.data['productPrice'],
+              //             productImage: snapshot.data['image_url'],
+              //           ),
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
+              // Container(
+              //   margin: EdgeInsets.all(deviceWidth * 0.01),
+              //   child: Column(
+              //     crossAxisAlignment: CrossAxisAlignment.stretch,
+              //     mainAxisAlignment: MainAxisAlignment.start,
+              //     children: [
+              //       Text(
+              //         'Best seller',
+              //         style: TextStyle(fontWeight: FontWeight.bold),
+              //       ),
+              //       Container(
+              //         height: deviceHeight * 0.23,
+              //         width: deviceWidth * 0.3,
+              //         child: ListView.builder(
+              //           scrollDirection: Axis.horizontal,
+              //           itemCount: 10,
+              //           itemBuilder: (BuildContext context, int index) =>
+              //               ProductItem(
+              //             productName: snapshot.data['productName'],
+              //             productPrice: snapshot.data['productPrice'],
+              //             productImage: snapshot.data['image_url'],
+              //           ),
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
             ],
           );
         },

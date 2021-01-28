@@ -16,12 +16,11 @@ class ProductItem extends StatelessWidget {
     final deviceHeight = MediaQuery.of(context).size.height;
     final deviceWidth = MediaQuery.of(context).size.width;
     return PhysicalModel(
-      elevation: 8.0,
-      borderRadius: BorderRadius.circular(20),
       color: Theme.of(context).backgroundColor,
+      elevation: 5,
+      borderRadius: BorderRadius.circular(20),
       child: Container(
         padding: EdgeInsets.all(deviceWidth * 0.03),
-
         child: Stack(
           children: [
             Container(

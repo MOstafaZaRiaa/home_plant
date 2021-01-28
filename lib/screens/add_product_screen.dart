@@ -87,8 +87,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
         // //upload product to firebase firestore
         await FirebaseFirestore.instance
             .collection('products')
-            .doc(user.uid)
-            .set({
+            .add({
           'productName': productName,
           'productPrice': productPrice,
           'productDescription': productDescription,
@@ -220,10 +219,6 @@ class _AddProductScreenState extends State<AddProductScreen> {
                       elevation: 16,
                       style: TextStyle(
                           color: Theme.of(context).textTheme.headline1.color),
-                      // underline: Container(
-                      //   height: 2,
-                      //   color: Colors.deepPurpleAccent,
-                      // ),
                       onChanged: (String newValue) {
                         setState(() {
                           productKind = newValue;
