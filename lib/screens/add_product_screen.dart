@@ -49,28 +49,6 @@ class _AddProductScreenState extends State<AddProductScreen> {
       setState(() {
         _productImageLink = productImageLink;
       });
-
-      // //upload product to firebase firestore
-      // await FirebaseFirestore.instance
-      //     .collection('users')
-      //     .doc(user.uid)
-      //     .set({
-      //   'email': _userEmail,
-      //   'username': _userName,
-      //   'image_url': userDummyImage,
-      // });
-
-      //show snackbar that process is completed
-    //   Scaffold.of(ctx).showSnackBar(
-    //     SnackBar(
-    //       content: Text('Image uploaded'),
-    //       backgroundColor: Theme.of(ctx).primaryColor,
-    //     ),
-    //   );
-    // } catch (error) {
-    //   //show snackbar that process is not completed
-    //   Scaffold.of(ctx).showSnackBar(SnackBar(content: error.meassage));
-    // }
   }
 
   void validateProduct(BuildContext ctx)async{
