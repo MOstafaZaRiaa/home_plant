@@ -10,130 +10,197 @@ class AllTab extends StatelessWidget {
     final deviceHeight = MediaQuery.of(context).size.height;
     final deviceWidth = MediaQuery.of(context).size.width;
     return SingleChildScrollView(
-      child: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('products').snapshots(),
-        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          final products = snapshot.data.docs;
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Container(
-                margin: EdgeInsets.all(deviceWidth * 0.01),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Best seller',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    Container(
-                      height: deviceHeight * 0.24,
-                      width: deviceWidth * 0.3,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: products.length,
-                        itemBuilder: (BuildContext context, int index) =>
-                            ProductItem(
-                          productName: products[index]['productName'],
-                          productPrice: products[index]['productPrice'],
-                          productImage: products[index]['image_url'],
-                        ),
+      child:Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                StreamBuilder(
+                  stream:FirebaseFirestore.instance.collection('products').where('productKind',
+                    isEqualTo: 'Plant',).limit(15).snapshots(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    final products = snapshot.data.docs;
+                    return Container(
+                      height: deviceHeight * 0.31,
+                      margin: EdgeInsets.all(deviceWidth * 0.01),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Plants',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              TextButton(onPressed: (){}, child: Text('See more >',style: TextStyle(color: Theme.of(context).textTheme.headline1.color,),),),
+
+                            ],
+                          ),
+                          Container(
+                            height: deviceHeight * 0.24,
+                            width: deviceWidth * 0.3,
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: products.length,
+                              itemBuilder: (BuildContext context, int index) =>
+                                  ProductItem(
+                                productName: products[index]['productName'],
+                                productPrice: products[index]['productPrice'],
+                                productImage: products[index]['image_url'],
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                  ],
+                    );
+                  }
                 ),
-              ),
-              // Container(
-              //   margin: EdgeInsets.all(deviceWidth * 0.01),
-              //   child: Column(
-              //     crossAxisAlignment: CrossAxisAlignment.stretch,
-              //     mainAxisAlignment: MainAxisAlignment.start,
-              //     children: [
-              //       Text(
-              //         'Sale',
-              //         style: TextStyle(fontWeight: FontWeight.bold),
-              //       ),
-              //       Container(
-              //         height: deviceHeight * 0.23,
-              //         width: deviceWidth * 0.3,
-              //         child: ListView.builder(
-              //           scrollDirection: Axis.horizontal,
-              //           itemCount: 10,
-              //           itemBuilder: (BuildContext context, int index) =>
-              //               ProductItem(
-              //             productName: snapshot.data['productName'],
-              //             productPrice: snapshot.data['productPrice'],
-              //             productImage: snapshot.data['image_url'],
-              //           ),
-              //         ),
-              //       ),
-              //     ],
-              //   ),
-              // ),
-              // Container(
-              //   margin: EdgeInsets.all(deviceWidth * 0.01),
-              //   child: Column(
-              //     crossAxisAlignment: CrossAxisAlignment.stretch,
-              //     mainAxisAlignment: MainAxisAlignment.start,
-              //     children: [
-              //       Text(
-              //         'Flowers',
-              //         style: TextStyle(fontWeight: FontWeight.bold),
-              //       ),
-              //       Container(
-              //         height: deviceHeight * 0.23,
-              //         width: deviceWidth * 0.3,
-              //         child: ListView.builder(
-              //           scrollDirection: Axis.horizontal,
-              //           itemCount: 10,
-              //           itemBuilder: (BuildContext context, int index) =>
-              //               ProductItem(
-              //             productName: snapshot.data['productName'],
-              //             productPrice: snapshot.data['productPrice'],
-              //             productImage: snapshot.data['image_url'],
-              //           ),
-              //         ),
-              //       ),
-              //     ],
-              //   ),
-              // ),
-              // Container(
-              //   margin: EdgeInsets.all(deviceWidth * 0.01),
-              //   child: Column(
-              //     crossAxisAlignment: CrossAxisAlignment.stretch,
-              //     mainAxisAlignment: MainAxisAlignment.start,
-              //     children: [
-              //       Text(
-              //         'Best seller',
-              //         style: TextStyle(fontWeight: FontWeight.bold),
-              //       ),
-              //       Container(
-              //         height: deviceHeight * 0.23,
-              //         width: deviceWidth * 0.3,
-              //         child: ListView.builder(
-              //           scrollDirection: Axis.horizontal,
-              //           itemCount: 10,
-              //           itemBuilder: (BuildContext context, int index) =>
-              //               ProductItem(
-              //             productName: snapshot.data['productName'],
-              //             productPrice: snapshot.data['productPrice'],
-              //             productImage: snapshot.data['image_url'],
-              //           ),
-              //         ),
-              //       ),
-              //     ],
-              //   ),
-              // ),
-            ],
-          );
-        },
-      ),
+                StreamBuilder(
+                  stream:FirebaseFirestore.instance.collection('products').where('productKind',
+                    isEqualTo: 'Flowers',).limit(15).snapshots(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    final products = snapshot.data.docs;
+                    return Container(
+                      height: deviceHeight * 0.31,
+                      margin: EdgeInsets.all(deviceWidth * 0.01),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Flowers',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              TextButton(onPressed: (){}, child: Text('See more >',style: TextStyle(color: Theme.of(context).textTheme.headline1.color,),),),
+                            ],
+                          ),
+                          Container(
+                            height: deviceHeight * 0.24,
+                            width: deviceWidth * 0.3,
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: products.length,
+                              itemBuilder: (BuildContext context, int index) =>
+                                  ProductItem(
+                                productName: products[index]['productName'],
+                                productPrice: products[index]['productPrice'],
+                                productImage: products[index]['image_url'],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                ),
+                StreamBuilder(
+                  stream:FirebaseFirestore.instance.collection('products').where('productKind',
+                    isEqualTo: 'Accessories',).limit(15).snapshots(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    final products = snapshot.data.docs;
+                    return Container(
+                      height: deviceHeight * 0.31,
+                      margin: EdgeInsets.all(deviceWidth * 0.01),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Accessories',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              TextButton(onPressed: (){}, child: Text('See more >',style: TextStyle(color: Theme.of(context).textTheme.headline1.color,),),),
+                            ],
+                          ),
+                          Container(
+                            height: deviceHeight * 0.24,
+                            width: deviceWidth * 0.3,
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: products.length,
+                              itemBuilder: (BuildContext context, int index) =>
+                                  ProductItem(
+                                productName: products[index]['productName'],
+                                productPrice: products[index]['productPrice'],
+                                productImage: products[index]['image_url'],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                ),
+                StreamBuilder(
+                  stream:FirebaseFirestore.instance.collection('products').where('productKind',
+                    isEqualTo: 'Pot',).limit(15).snapshots(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    final products = snapshot.data.docs;
+                    return Container(
+                      height: deviceHeight * 0.31,
+                      margin: EdgeInsets.all(deviceWidth * 0.01),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Pot',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              TextButton(onPressed: (){}, child: Text('See more >',style: TextStyle(color: Theme.of(context).textTheme.headline1.color,),),),
+                            ],
+                          ),
+                          Container(
+                            height: deviceHeight * 0.24,
+                            width: deviceWidth * 0.3,
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: products.length,
+                              itemBuilder: (BuildContext context, int index) =>
+                                  ProductItem(
+                                productName: products[index]['productName'],
+                                productPrice: products[index]['productPrice'],
+                                productImage: products[index]['image_url'],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                ),
+              ],
+            ),
+
     );
   }
 }
