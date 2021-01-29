@@ -16,6 +16,7 @@ class AllTab extends StatelessWidget {
           RowOfDifferentProducts(
             deviceHeight: deviceHeight,
             deviceWidth: deviceWidth,
+            categoryName: 'Plants',
             stream: FirebaseFirestore.instance
                 .collection('products')
                 .where(
@@ -28,6 +29,7 @@ class AllTab extends StatelessWidget {
           RowOfDifferentProducts(
             deviceHeight: deviceHeight,
             deviceWidth: deviceWidth,
+            categoryName: 'Flowers',
             stream: FirebaseFirestore.instance
                 .collection('products')
                 .where(
@@ -40,6 +42,7 @@ class AllTab extends StatelessWidget {
           RowOfDifferentProducts(
             deviceHeight: deviceHeight,
             deviceWidth: deviceWidth,
+            categoryName: 'Accessories',
             stream: FirebaseFirestore.instance
                 .collection('products')
                 .where(
@@ -52,6 +55,7 @@ class AllTab extends StatelessWidget {
           RowOfDifferentProducts(
             deviceHeight: deviceHeight,
             deviceWidth: deviceWidth,
+            categoryName: 'Pot',
             stream: FirebaseFirestore.instance
                 .collection('products')
                 .where(
@@ -72,11 +76,13 @@ class RowOfDifferentProducts extends StatelessWidget {
       {Key key,
       @required this.deviceHeight,
       @required this.deviceWidth,
+      @required this.categoryName,
       @required this.stream})
       : super(key: key);
 
   final double deviceHeight;
   final double deviceWidth;
+  final String categoryName;
   final Stream stream;
 
   @override
@@ -85,8 +91,7 @@ class RowOfDifferentProducts extends StatelessWidget {
       height: deviceHeight * 0.32,
       child: StreamBuilder(
           stream:
-              stream, //FirebaseFirestore.instance.collection('products').where('productKind',
-          //isEqualTo: 'Plant',).limit(15).snapshots(),
+              stream,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
@@ -95,7 +100,7 @@ class RowOfDifferentProducts extends StatelessWidget {
             }
             final products = snapshot.data.docs;
             return Container(
-              height: deviceHeight * 0.31,
+              height: deviceHeight * 0.37,
               margin: EdgeInsets.all(deviceWidth * 0.01),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -105,7 +110,7 @@ class RowOfDifferentProducts extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Plants',
+                        categoryName,
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       TextButton(
