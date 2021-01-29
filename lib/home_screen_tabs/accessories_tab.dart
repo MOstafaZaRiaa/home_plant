@@ -11,9 +11,9 @@ class AccessoriesTab extends StatelessWidget {
       stream: FirebaseFirestore.instance
           .collection('products')
           .where(
-        'productKind',
-        isEqualTo: 'Accessories',
-      )
+            'productKind',
+            isEqualTo: 'Accessories',
+          )
           .snapshots(),
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -26,8 +26,8 @@ class AccessoriesTab extends StatelessWidget {
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3,
             childAspectRatio: 0.7,
-            crossAxisSpacing: 7,
-            mainAxisSpacing: 0,
+            crossAxisSpacing: 6,
+            mainAxisSpacing: 6,
           ),
           itemCount: products.length,
           itemBuilder: (ctx, index) => ProductItem(
