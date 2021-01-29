@@ -57,7 +57,10 @@ class _AddProductScreenState extends State<AddProductScreen> {
       isUploading = true;
     });
     final isValid = _formKey.currentState.validate();
-    if(isValid || newPickedImage != null ){
+    if(newPickedImage == null){
+      Scaffold.of(ctx).showSnackBar(SnackBar(content: Text('You have to chose a photo'),backgroundColor: Theme.of(context).errorColor,),);
+    }
+    if(isValid && newPickedImage != null ){
       _formKey.currentState.save();
       try{
         Scaffold.of(ctx).showSnackBar(SnackBar(content: Text('Uploading...',),backgroundColor: Theme.of(context).primaryColor,),);
