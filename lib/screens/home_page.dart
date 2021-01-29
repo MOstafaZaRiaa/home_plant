@@ -4,7 +4,7 @@ import 'package:feature_discovery/feature_discovery.dart';
 import 'package:home_plant/home_screen_tabs/accessories_tab.dart';
 import 'package:home_plant/home_screen_tabs/all_tab.dart';
 import 'package:home_plant/home_screen_tabs/plants_tab.dart';
-import 'package:home_plant/home_screen_tabs/post_tab.dart';
+import 'package:home_plant/home_screen_tabs/flowers_tab.dart';
 import 'package:home_plant/widgts/bottom_navigation_bar.dart';
 import 'package:home_plant/widgts/cart_widget.dart';
 import 'bodies/search_screen_body.dart';
@@ -104,7 +104,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           ? TabBarView(controller: _tabController, children: [
               AllTab(),
               PlantsTab(),
-              PostTab(),
+              FlowersTab(),
               AccessoriesTab(),
             ]) //tapBarChild
           : Center(
