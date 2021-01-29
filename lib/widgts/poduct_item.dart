@@ -64,7 +64,7 @@ class ProductItem extends StatelessWidget {
                     ],
                   ),
                   SizedBox(
-                    width: deviceWidth * 0.06,
+                    width: deviceWidth * 0.04,
                   ),
                   IconButton(
                       icon: Icon(Icons.add_circle_rounded), onPressed: () {}),
