@@ -9,8 +9,6 @@ import 'package:min_id/min_id.dart';
 
 class AddProductScreen extends StatefulWidget {
   @override
-  static const userDummyImage =
-      'https://firebasestorage.googleapis.com/v0/b/chat-4427c.appspot.com/o/dummy450x450.jpg?alt=media&token=5d35f236-0420-4d47-a94d-b10ed0f50c63';
 
   @override
   _AddProductScreenState createState() => _AddProductScreenState();

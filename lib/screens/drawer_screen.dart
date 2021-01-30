@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:home_plant/providers/theme_provider.dart';
-import 'package:home_plant/screens/edit_product_screen.dart';
+import 'package:home_plant/screens/my_products_screen.dart';
 import 'package:home_plant/screens/profile_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -172,7 +172,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => EditProductScreen(),
+                          builder: (context) => MyProductScreen(),
                         ),
                       );
                     },

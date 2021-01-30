@@ -8,18 +8,15 @@ class GridViewForTabsBody extends StatelessWidget {
   const GridViewForTabsBody({@required this.stream});
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: stream,//FirebaseFirestore.instance
-      //     .collection('products')
-      //     .where(
-      //   'productKind',
-      //   isEqualTo: 'Accessories',
-      // )
-      //     .snapshots(),
+      stream: stream,
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
             child: CircularProgressIndicator(),
           );
+        }
+        if(!snapshot.hasData){
+          return Center(child: Text('Wait until we add products..'),);
         }
         final products = snapshot.data.docs;
         return GridView.builder(
