@@ -31,7 +31,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('Yes'),
+              child: Text('Yes',style: TextStyle(color: Theme.of(context).errorColor,),),
               onPressed: () {
                 FirebaseAuth.instance.signOut();
                 Navigator.of(context).pop();
