@@ -25,6 +25,7 @@ class EditProductScreen extends StatelessWidget {
                 productName: products[index]['productName'],
                 productImage: products[index]['image_url'],
                 productPrice: products[index]['productPrice'].toString(),
+                productId: products[index]['productId'],
             ),
           );
         },

@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 class EditProductItem extends StatelessWidget {
   @override
   final String productImage;
@@ -37,7 +37,9 @@ class EditProductItem extends StatelessWidget {
             IconButton(icon: Icon(Icons.edit_rounded,color: Theme.of(context).accentColor,), onPressed: (){
               print(productId);
             },),
-            IconButton(icon: Icon(Icons.delete_outline,color: Theme.of(context).accentColor,), onPressed: (){},),
+            IconButton(icon: Icon(Icons.delete_outline,color: Theme.of(context).accentColor,), onPressed: (){
+              FirebaseFirestore.instance.collection('products').doc(productId).delete();
+            },),
           ],
         ),
       ),

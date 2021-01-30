@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:min_id/min_id.dart';
 
 class AddProductScreen extends StatefulWidget {
   @override
@@ -63,13 +64,15 @@ class _AddProductScreenState extends State<AddProductScreen> {
     if(isValid && newPickedImage != null ){
       _formKey.currentState.save();
       try{
+        final productId = MinId.getId();
         Scaffold.of(ctx).showSnackBar(SnackBar(content: Text('Uploading...',),backgroundColor: Theme.of(context).primaryColor,),);
         await uploadImage();
         // //upload product to firebase firestore
         await FirebaseFirestore.instance
-            .collection('products')
-            .add({
+            .collection('products').doc(productId)
+            .set({
           'productName': productName,
+          'productId': productId,
           'productPrice': productPrice,
           'productDescription': productDescription,
           'productKind': productKind,
