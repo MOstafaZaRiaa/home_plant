@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:home_plant/providers/theme_provider.dart';
+import 'package:home_plant/screens/edit_product_screen.dart';
 import 'package:home_plant/screens/profile_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -115,7 +116,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                   //edit profile
                   ListTile(
                     leading: Icon(
-                      Icons.edit_rounded,
+                      Icons.person_rounded,
                       color: Theme.of(context).textTheme.headline1.color,
                     ),
                     title: Text(
@@ -153,6 +154,25 @@ class _DrawerScreenState extends State<DrawerScreen> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => AddProductScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(
+                      Icons.edit_rounded,
+                      color: Theme.of(context).textTheme.headline1.color,
+                    ),
+                    title: Text(
+                      'Edit products',
+                      style: TextStyle(
+                          color: Theme.of(context).textTheme.headline1.color),
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => EditProductScreen(),
                         ),
                       );
                     },
