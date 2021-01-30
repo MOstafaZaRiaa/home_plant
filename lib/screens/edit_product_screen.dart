@@ -42,6 +42,11 @@ class _EditProductScreenState extends State<EditProductScreen> {
   String productDescription = '';
   double productPrice;
 
+  void initState(){
+    productKind = widget.productKind;
+    super.initState();
+  }
+
   Future<void> setProductImage(BuildContext ctx) async {
     newPickedImage = await ImagePicker.pickImage(
       source: ImageSource.gallery,
@@ -125,7 +130,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
     }
   }
 
-
+  @override
   Widget build(BuildContext context) {
     final deviceHeight = MediaQuery.of(context).size.height;
     return Scaffold(
