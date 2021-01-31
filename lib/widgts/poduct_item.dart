@@ -49,15 +49,17 @@ class _ProductItemState extends State<ProductItem> {
         'isProductFavourite': widget.isProductFavourite,
       });
       print('pro is added');
-      Scaffold.of(context).showSnackBar(SnackBar(
-        content: Text(
-          'Added from favorite list.',
-          style: TextStyle(
-            color: Theme.of(context).accentTextTheme.headline1.color,
+      Scaffold.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Added from favorite list.',
+            style: TextStyle(
+              color: Theme.of(context).accentTextTheme.headline1.color,
+            ),
           ),
+          backgroundColor: Theme.of(context).primaryColor,
         ),
-        backgroundColor: Theme.of(context).primaryColor,
-      ),);
+      );
     } else {
       await FirebaseFirestore.instance
           .collection('users')
@@ -66,15 +68,17 @@ class _ProductItemState extends State<ProductItem> {
           .doc(widget.productId)
           .delete();
       print('pro is deleted');
-      Scaffold.of(context).showSnackBar(SnackBar(
-        content: Text(
-          'Deleted to favorite list.',
-          style: TextStyle(
-            color: Theme.of(context).accentTextTheme.headline1.color,
+      Scaffold.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Deleted to favorite list.',
+            style: TextStyle(
+              color: Theme.of(context).accentTextTheme.headline1.color,
+            ),
           ),
+          backgroundColor: Theme.of(context).primaryColor,
         ),
-        backgroundColor: Theme.of(context).primaryColor,
-      ),);
+      );
     }
   }
 
@@ -116,52 +120,63 @@ class _ProductItemState extends State<ProductItem> {
         child: Stack(
           children: [
             Container(
-              height: deviceHeight * 0.25,
-              width: deviceWidth * 0.3,
+              // height: deviceHeight * 0.25,
+              // width: deviceWidth * 0.3,
               decoration: BoxDecoration(
                   color: Theme.of(context).backgroundColor,
                   borderRadius: BorderRadius.circular(20)),
             ),
-            Container(
-              height: deviceHeight * 0.155,
-              width: deviceWidth * 0.3,
-              decoration: BoxDecoration(
-                  color: Theme.of(context).accentColor,
-                  borderRadius: BorderRadius.circular(20)),
-              child: FadeInImage(
-                fit: BoxFit.fill,
-                image: NetworkImage(
-                  widget.productImage,
+            Column(
+              children: [
+                Expanded(
+                  flex: 3,
+                  child: Container(
+                    height: deviceHeight * 0.155,
+                    width: deviceWidth * 0.3,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: widget.productImage == null
+                              ? AssetImage(
+                                  'assets/images/plant_outline_dark.png')
+                              : NetworkImage(
+                                  widget.productImage,
+                                ),
+                          fit: BoxFit.cover),
+                      color: Theme.of(context).accentColor,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
                 ),
-                placeholder: AssetImage('assets/images/plant_outline_dark.png'),
-              ),
-            ),
-            Positioned(
-              left: deviceWidth * .02,
-              bottom: 0,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                Expanded(
+                  flex: 1,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        widget.productName,
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            widget.productName.substring(0,7),
+                            overflow: TextOverflow.fade,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            '${widget.productPrice}\$',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ],
                       ),
-                      Text(
-                        '${widget.productPrice}\$',
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                      IconButton(
+                        // alignment: Alignment.centerRight,
+                        icon: Icon(Icons.add_circle_rounded),
+                        onPressed: () {},
                       ),
                     ],
                   ),
-                  SizedBox(
-                    width: deviceWidth * 0.04,
-                  ),
-                  IconButton(
-                      icon: Icon(Icons.add_circle_rounded), onPressed: () {}),
-                ],
-              ),
+                ),
+              ],
             ),
             Positioned(
               right: 0,
