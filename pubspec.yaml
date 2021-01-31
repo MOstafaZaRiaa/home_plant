@@ -30,14 +30,15 @@ dependencies:
   cupertino_icons: ^1.0.0
   ff_navigation_bar: ^0.1.4
   feature_discovery: ^0.13.0+2
-  firebase_storage: ^7.0.0
-  firebase_auth: ^0.20.0+1
-  firebase_core: ^0.7.0
-  cloud_firestore: ^0.16.0
+  firebase_storage: any
+  firebase_auth:
+  firebase_core:
+  cloud_firestore:
   image_picker: ^0.6.7+21
   provider: ^4.3.3
   shared_preferences: ^0.5.12+4
   min_id: ^1.0.3
+
 
 dev_dependencies:
   flutter_test:
