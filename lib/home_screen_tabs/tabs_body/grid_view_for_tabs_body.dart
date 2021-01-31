@@ -38,7 +38,7 @@ class _GridViewForTabsBodyState extends State<GridViewForTabsBody> {
             itemBuilder: (ctx, index) => ProductItem(
               productName: products[index]['productName'],
               productPrice: products[index]['productPrice'],
-              productImage: products[index]['image_url'],
+              productImage: products[index]['imagePath'],
               productId: products[index]['productId'],
               productDescription: products[index]['productDescription'],
               productKind: products[index]['productKind'],

@@ -20,11 +20,12 @@ class _AddProductScreenState extends State<AddProductScreen> {
   final _formKey = GlobalKey<FormState>();
 
   bool isUploading = false;
-  String _productImageLink = '';
+  String _productImagePath = '';
   String productKind = 'Plant';
   String productName = '';
   String productDescription = '';
   double productPrice;
+  final productId = MinId.getId();
 
   Future<void> setProductImage(BuildContext ctx) async {
     newPickedImage = await ImagePicker.pickImage(
@@ -41,12 +42,12 @@ class _AddProductScreenState extends State<AddProductScreen> {
       final ref = FirebaseStorage.instance
           .ref()
           .child('product_image')
-          .child(user.uid + '.jpg');
+          .child(productId + '.jpg');
       await ref.putFile(newPickedImage);
       // get the link of uoloaded image
-      final productImageLink = await ref.getDownloadURL();
+      final productImagePath = await ref.fullPath;
       setState(() {
-        _productImageLink = productImageLink;
+        _productImagePath = productImagePath;
       });
   }
 
@@ -62,7 +63,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
     if(isValid && newPickedImage != null ){
       _formKey.currentState.save();
       try{
-        final productId = MinId.getId();
+
         Scaffold.of(ctx).showSnackBar(SnackBar(content: Text('Uploading...',),backgroundColor: Theme.of(context).primaryColor,),);
         await uploadImage();
         // //upload product to firebase firestore
@@ -74,7 +75,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
           'productPrice': productPrice,
           'productDescription': productDescription,
           'productKind': productKind,
-          'image_url': _productImageLink,
+          'imagePath': _productImagePath,
         });
         Scaffold.of(ctx).showSnackBar(SnackBar(content: Text('it\'s done.'),backgroundColor: Theme.of(context).primaryColor,),);
       }on FirebaseException catch (error){

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_image/firebase_image.dart';
 import 'package:flutter/material.dart';
 
 class ProductItem extends StatefulWidget {
@@ -138,8 +139,8 @@ class _ProductItemState extends State<ProductItem> {
                           image: widget.productImage == null
                               ? AssetImage(
                                   'assets/images/plant_outline_dark.png')
-                              : NetworkImage(
-                                  widget.productImage,
+                              : FirebaseImage(
+                                  'gs://home-plant.appspot.com/${widget.productImage}',
                                 ),
                           fit: BoxFit.cover),
                       color: Theme.of(context).accentColor,
@@ -156,7 +157,9 @@ class _ProductItemState extends State<ProductItem> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            widget.productName.substring(0,7),
+                            widget.productName.length < 7
+                                ? widget.productName
+                                : widget.productName.substring(0, 7),
                             overflow: TextOverflow.fade,
                             style: TextStyle(
                               fontWeight: FontWeight.bold,

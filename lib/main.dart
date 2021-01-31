@@ -34,18 +34,18 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   bool themeEnabled=false;
-  Future<bool> getData() async {
-    bool _isDarkThemeEnabled;
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    _isDarkThemeEnabled = prefs.getBool('MODE') ?? true;
-    themeEnabled = _isDarkThemeEnabled;
-    Provider.of<ThemeProvider>(context, listen: false)
-        .setIsDarkThemeEnabled(_isDarkThemeEnabled);
-    return _isDarkThemeEnabled;
-  }
+  // Future<bool> getData() async {
+  //   bool _isDarkThemeEnabled;
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   _isDarkThemeEnabled = prefs.getBool('MODE') ?? true;
+  //   themeEnabled = _isDarkThemeEnabled;
+  //   Provider.of<ThemeProvider>(context, listen: false)
+  //       .setIsDarkThemeEnabled(_isDarkThemeEnabled);
+  //   return _isDarkThemeEnabled;
+  // }
   @override
   void initState() {
-    getData();
+    // getData();
     super.initState();
   }
 

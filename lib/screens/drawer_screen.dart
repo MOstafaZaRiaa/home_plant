@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_image/firebase_image.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:home_plant/providers/theme_provider.dart';
@@ -82,7 +83,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                           child: CircleAvatar(
                             backgroundColor: Theme.of(context).accentColor,
                             radius: MediaQuery.of(context).size.width * .12,
-                            backgroundImage:NetworkImage(snapshot.data['image_url'],) ,
+                            backgroundImage:FirebaseImage('gs://home-plant.appspot.com/${snapshot.data['imagePath']}',) ,
                           ),
                         ),
                         Column(
@@ -131,7 +132,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                           builder: (context) => ProfileScreen(
                             userName: snapshot.data['username'],
                             userEmail: snapshot.data['email'],
-                            imageUrl: snapshot.data['image_url'],
+                            imageUrl: snapshot.data['imagePath'],
                             user: user,
                           ),
                         ),
