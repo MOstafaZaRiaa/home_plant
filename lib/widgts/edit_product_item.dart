@@ -71,7 +71,7 @@ class EditProductItem extends StatelessWidget {
             ),
             CircleAvatar(
               radius: 30,
-              backgroundImage: NetworkImage(productImage),
+              backgroundImage: NetworkImage(productImage,),
             ),
             SizedBox(
               width: deviceWidth * 0.01,
