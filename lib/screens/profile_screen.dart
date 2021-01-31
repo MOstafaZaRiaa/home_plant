@@ -32,7 +32,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String newUsername;
   String newPassword;
   User user = FirebaseAuth.instance.currentUser;
-  bool isSubmitting = false;
   final _formKey = GlobalKey<FormState>();
 
   Future<void> updateInUserData(
@@ -95,9 +94,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<void> submitChanges(BuildContext ctx) async {
     FocusScope.of(ctx).unfocus();
-    setState(() {
-      isSubmitting = true;
-    });
+    Scaffold.of(ctx).showSnackBar(
+      SnackBar(
+        content: Text('Updating...'),
+        backgroundColor: Theme.of(ctx).primaryColor,
+      ),
+    );
     final isValid = _formKey.currentState.validate();
     if (isValid) {
       try {
@@ -121,9 +123,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         );
       }
     }
-    setState(() {
-      isSubmitting = false;
-    });
   }
 
   Widget build(BuildContext context) {
@@ -142,19 +141,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ],
       ),
-      body: StreamBuilder(
-          stream: FirebaseFirestore.instance
-              .collection('users')
-              .doc(user.uid)
-              .snapshots(),
-          builder: (context, snapshot) {
-            bool isWaiting =
-                snapshot.connectionState == ConnectionState.waiting;
-            return (isSubmitting || isWaiting)
-                ? Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : SingleChildScrollView(
+       body: SingleChildScrollView(
                     child: Form(
                       key: _formKey,
                       child: Column(
@@ -219,7 +206,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             child: TextFormField(
                               maxLength: 22,
                               textInputAction: TextInputAction.next,
-                              initialValue: snapshot.data['username'],
+                              initialValue: widget.userName,
                               decoration: InputDecoration(
                                 labelText: 'username',
                               ),
@@ -254,7 +241,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 }
                                 return null;
                               },
-                              initialValue: snapshot.data['email'],
+                              initialValue: widget.userEmail,
                             ),
                           ),
                           SizedBox(
@@ -278,8 +265,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ],
                       ),
                     ),
-                  );
-          }),
+                  ),
     );
   }
 }
