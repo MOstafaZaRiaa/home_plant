@@ -7,7 +7,7 @@ import 'package:home_plant/screens/product_detail_screen.dart';
 class ProductItem extends StatefulWidget {
   final productName;
   final productPrice;
-  final productImage;
+  final productImagePath;
   final productKind;
   final productDescription;
   final productId;
@@ -15,7 +15,7 @@ class ProductItem extends StatefulWidget {
 
   ProductItem({
     this.productName,
-    this.productImage,
+    this.productImagePath,
     this.productPrice,
     this.productKind,
     this.productDescription,
@@ -47,7 +47,7 @@ class _ProductItemState extends State<ProductItem> {
         'productPrice': widget.productPrice,
         'productDescription': widget.productDescription,
         'productKind': widget.productKind,
-        'image_url': widget.productImage,
+        'image_url': widget.productImagePath,
         'isProductFavourite': widget.isProductFavourite,
       });
       print('pro is added');
@@ -83,8 +83,23 @@ class _ProductItemState extends State<ProductItem> {
       );
     }
   }
-  void inProductClicked(){
-    Navigator.push(context, MaterialPageRoute(builder: (context)=>ProductDetailScreen(),),);
+
+  void inProductClicked() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ProductDetailScreen(
+          productKind: widget.productKind ,
+          productDescription: widget.productDescription,
+          productId: widget.productId,
+          productPrice: widget.productPrice,
+          productName: widget.productName,
+          productImagePath: widget.productImagePath,
+          isProductFavourite: widget.isProductFavourite,
+          user: user,
+        ),
+      ),
+    );
   }
 
   //set value of favorite
@@ -123,12 +138,10 @@ class _ProductItemState extends State<ProductItem> {
         elevation: 5,
         borderRadius: BorderRadius.circular(20),
         child: Container(
-          padding: EdgeInsets.all(deviceWidth * 0.03),
+          padding: EdgeInsets.all(deviceWidth * 0.01),
           child: Stack(
             children: [
               Container(
-                // height: deviceHeight * 0.25,
-                // width: deviceWidth * 0.3,
                 decoration: BoxDecoration(
                     color: Theme.of(context).backgroundColor,
                     borderRadius: BorderRadius.circular(20)),
@@ -142,11 +155,11 @@ class _ProductItemState extends State<ProductItem> {
                       width: deviceWidth * 0.3,
                       decoration: BoxDecoration(
                         image: DecorationImage(
-                            image: widget.productImage == null
+                            image: widget.productImagePath == null
                                 ? AssetImage(
                                     'assets/images/plant_outline_dark.png')
                                 : FirebaseImage(
-                                    'gs://home-plant.appspot.com/${widget.productImage}',
+                                    'gs://home-plant.appspot.com/${widget.productImagePath}',
                                   ),
                             fit: BoxFit.cover),
                         color: Theme.of(context).accentColor,

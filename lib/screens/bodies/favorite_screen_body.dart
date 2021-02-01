@@ -37,7 +37,7 @@ class FavoriteScreenBody extends StatelessWidget {
             itemBuilder: (ctx, index) => ProductItem(
               productName: products[index]['productName'],
               productPrice: products[index]['productPrice'],
-              productImage: products[index]['image_url'],
+              productImagePath: products[index]['image_url'],
               productId: products[index]['productId'],
               productDescription: products[index]['productDescription'],
               productKind: products[index]['productKind'],
