@@ -88,17 +88,7 @@ class RowOfDifferentProducts extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: deviceHeight * 0.32,
-      child: StreamBuilder(
-          stream:
-              stream,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            final products = snapshot.data.docs;
-            return Container(
+      child:Container(
               height: deviceHeight * 0.37,
               margin: EdgeInsets.all(deviceWidth * 0.01),
               child: Column(
@@ -123,27 +113,38 @@ class RowOfDifferentProducts extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Container(
-                    height: deviceHeight * 0.24,
-                    width: deviceWidth * 0.3,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: products.length,
-                      itemBuilder: (BuildContext context, int index) =>
-                          ProductItem(
-                            productName: products[index]['productName'],
-                            productPrice: products[index]['productPrice'],
-                            productImagePath: products[index]['imagePath'],
-                            productId: products[index]['productId'],
-                            productDescription: products[index]['productDescription'],
-                            productKind: products[index]['productKind'],
-                      ),
-                    ),
+                  StreamBuilder(
+                    stream: stream,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                      final products = snapshot.data.docs;
+                      return Container(
+                        height: deviceHeight * 0.24,
+                        width: deviceWidth * 0.3,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: products.length,
+                          itemBuilder: (BuildContext context, int index) =>
+                              ProductItem(
+                                productName: products[index]['productName'],
+                                productPrice: products[index]['productPrice'],
+                                productImagePath: products[index]['imagePath'],
+                                productId: products[index]['productId'],
+                                productDescription: products[index]['productDescription'],
+                                productKind: products[index]['productKind'],
+                              ),
+                        ),
+                      );
+                    }
                   ),
                 ],
               ),
-            );
-          }),
+            )
+
     );
   }
 }

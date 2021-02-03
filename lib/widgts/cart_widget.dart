@@ -44,31 +44,30 @@ class CartWidget extends StatelessWidget {
               );
             },
           ),
-          Positioned(
-            right: 8,
-            top: 8,
-            child: Container(
-              padding: EdgeInsets.all(2.0),
-              // color: Theme.of(context).accentColor,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10.0),
-                color: Theme.of(context).accentColor,
-              ),
-              constraints: BoxConstraints(
-                minWidth: 16,
-                minHeight: 16,
-              ),
-              child: Text(
-                //TODO:put numbers of products variable
-                '0',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Theme.of(context).primaryColor,
-                  fontSize: 10,
-                ),
-              ),
-            ),
-          ),
+          // Positioned(
+          //   right: 8,
+          //   top: 8,
+          //   child: Container(
+          //     padding: EdgeInsets.all(2.0),
+          //     // color: Theme.of(context).accentColor,
+          //     decoration: BoxDecoration(
+          //       borderRadius: BorderRadius.circular(10.0),
+          //       color: Theme.of(context).accentColor,
+          //     ),
+          //     constraints: BoxConstraints(
+          //       minWidth: 16,
+          //       minHeight: 16,
+          //     ),
+          //     child: Text(
+          //       _itemInCartCount.toString(),
+          //       textAlign: TextAlign.center,
+          //       style: TextStyle(
+          //         color: Theme.of(context).primaryColor,
+          //         fontSize: 10,
+          //       ),
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );

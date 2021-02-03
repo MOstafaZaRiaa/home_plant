@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_image/firebase_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +31,36 @@ class ProductDetailScreen extends StatefulWidget {
 }
 
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
+  User user = FirebaseAuth.instance.currentUser;
+  Future<void> addToCart(BuildContext context)async{
+
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .collection('cart')
+        .doc(widget.productId)
+        .set({
+      'productName': widget.productName,
+      'productId': widget.productId,
+      'productPrice': widget.productPrice,
+      'imagePath': widget.productImagePath,
+      'productAmount' : 1,
+    });
+    print('pro is added');
+    Scaffold.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          'Added to cart.',
+          style: TextStyle(
+            color: Theme.of(context).accentTextTheme.headline1.color,
+          ),
+        ),
+        backgroundColor: Theme.of(context).primaryColor,
+      ),
+    );
+
+  }
+
   Widget build(BuildContext context) {
     final deviceHeight = MediaQuery.of(context).size.height;
     final deviceWidth = MediaQuery.of(context).size.width;
@@ -128,7 +159,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
           SliverList(
             delegate: SliverChildListDelegate([
               SizedBox(
-                height: 10,
+                height: deviceHeight*0.02,
               ),
               Container(
                 margin: EdgeInsets.symmetric(horizontal: deviceWidth * 0.03),
@@ -144,7 +175,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       ),
                     ),
                     Builder(
-                     builder: (context)=> IconButton(
+                        builder: (context)=> IconButton(
                           icon: Icon(
                             widget.isProductFavourite
                                 ? Icons.favorite
@@ -152,9 +183,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                             color: Theme.of(context).primaryColor,
                           ),
                           onPressed: () =>
-                            addToFavorite(context),
+                              addToFavorite(context),
 
-                     )
+                        )
                     )],
                 ),
               ),
@@ -181,9 +212,19 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   ],
                 ),
               ),
-              SizedBox(
-                height: 800,
-              )
+              SizedBox(height: deviceHeight*0.8,),
+              InkWell(
+                child: FlatButton(
+                  padding: EdgeInsets.all(MediaQuery.of(context).size.height*0.024),
+                  child: Text(
+                    'ADD TO CART',
+                    style: TextStyle(
+                        color: Theme.of(context).accentTextTheme.headline1.color),
+                  ),
+                  onPressed: () {},
+                  color: Theme.of(context).primaryColor,
+                ),
+              ),
             ]),
           ),
         ],

@@ -1,7 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_image/firebase_image.dart';
-import 'package:flutter/material.dart';
+
 import 'package:home_plant/screens/product_detail_screen.dart';
 
 class ProductItem extends StatefulWidget {
@@ -50,11 +51,10 @@ class _ProductItemState extends State<ProductItem> {
         'image_url': widget.productImagePath,
         'isProductFavourite': widget.isProductFavourite,
       });
-      print('pro is added');
       Scaffold.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            'Added from favorite list.',
+            'Added to favorite list.',
             style: TextStyle(
               color: Theme.of(context).accentTextTheme.headline1.color,
             ),
@@ -73,7 +73,7 @@ class _ProductItemState extends State<ProductItem> {
       Scaffold.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            'Deleted to favorite list.',
+            'Deleted from favorite list.',
             style: TextStyle(
               color: Theme.of(context).accentTextTheme.headline1.color,
             ),
@@ -100,6 +100,35 @@ class _ProductItemState extends State<ProductItem> {
         ),
       ),
     );
+  }
+
+  Future<void> addToCart(BuildContext context)async{
+
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .collection('cart')
+          .doc(widget.productId)
+          .set({
+        'productName': widget.productName,
+        'productId': widget.productId,
+        'productPrice': widget.productPrice,
+        'imagePath': widget.productImagePath,
+        'productAmount' : 1,
+      });
+      print('pro is added');
+      Scaffold.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Added to cart.',
+            style: TextStyle(
+              color: Theme.of(context).accentTextTheme.headline1.color,
+            ),
+          ),
+          backgroundColor: Theme.of(context).primaryColor,
+        ),
+      );
+
   }
 
   //set value of favorite
@@ -161,7 +190,8 @@ class _ProductItemState extends State<ProductItem> {
                                 : FirebaseImage(
                                     'gs://home-plant.appspot.com/${widget.productImagePath}',
                                   ),
-                            fit: BoxFit.cover),
+                            fit: BoxFit.cover,
+                        ),
                         color: Theme.of(context).accentColor,
                         borderRadius: BorderRadius.circular(20),
                       ),
@@ -190,10 +220,11 @@ class _ProductItemState extends State<ProductItem> {
                             ),
                           ],
                         ),
-                        IconButton(
-                          // alignment: Alignment.centerRight,
-                          icon: Icon(Icons.add_circle_rounded),
-                          onPressed: () {},
+                        Builder(builder:(context)=> IconButton(
+                            // alignment: Alignment.centerRight,
+                            icon: Icon(Icons.add_circle_rounded),
+                            onPressed: ()=>addToCart(context),
+                          ),
                         ),
                       ],
                     ),
