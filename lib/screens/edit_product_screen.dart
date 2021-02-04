@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_image/firebase_image.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -9,21 +10,21 @@ import 'package:image_picker/image_picker.dart';
 class EditProductScreen extends StatefulWidget {
   @override
   final productKind;
-  final productImageLink;
+  final productImagePath;
   final productName;
   final productPrice;
   final productDescription;
   final productId;
   const EditProductScreen(
       {this.productKind,
-      this.productImageLink,
+      this.productImagePath,
       this.productName,
       this.productId,
       this.productPrice,
       this.productDescription});
 
   static const userDummyImage =
-      'https://firebasestorage.googleapis.com/v0/b/chat-4427c.appspot.com/o/dummy450x450.jpg?alt=media&token=5d35f236-0420-4d47-a94d-b10ed0f50c63';
+      'gs://home-plant.appspot.com/dummy450x450.jpg';
 
   @override
   _EditProductScreenState createState() => _EditProductScreenState();
@@ -36,7 +37,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
 
   bool isUploading = false;
   bool isEditing = false;
-  String _productImageLink = '';
+  String _productImagePath = '';
   String productKind = 'Plant';
   String productName = '';
   String productDescription = '';
@@ -68,9 +69,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
           .child(user.uid + '.jpg');
       await ref.putFile(newPickedImage);
       // get the link of uoloaded image
-      final productImageLink = await ref.getDownloadURL();
+      final productImagePath = ref.fullPath;
       setState(() {
-        _productImageLink = productImageLink;
+        _productImagePath = productImagePath;
       });
     }
   }
@@ -111,7 +112,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
           'productPrice': productPrice,
           'productDescription': productDescription,
           'productKind': productKind,
-          'image_url': isEditing?_productImageLink:widget.productImageLink,
+          'imagePath': isEditing?_productImagePath:widget.productImagePath,
         });
         Scaffold.of(ctx).showSnackBar(
           SnackBar(
@@ -160,7 +161,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       child: isEditing
                           ? Image(
                               image: FileImage(newPickedImage),
-                            ):Image.network(widget.productImageLink),
+                            ):Image(image:FirebaseImage('gs://home-plant.appspot.com/${widget.productImagePath}',), ),
                     ),
                     Positioned(
                       top: 10,

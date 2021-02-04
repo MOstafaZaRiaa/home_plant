@@ -11,11 +11,13 @@ class ProductItemInCart extends StatefulWidget {
   final productPrice;
   final productId;
   final productAmount;
+  final totalPrice;
   final User user;
   const ProductItemInCart({
     this.productImagePath,
     this.productName,
     this.productAmount,
+    this.totalPrice,
     this.productPrice,
     this.productId,
     this.user,
@@ -55,6 +57,14 @@ class _ProductItemInCartState extends State<ProductItemInCart> {
         .doc(widget.productId)
         .update({
       'productAmount' : proAmount,
+    });
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(widget.user.uid)
+        .collection('cart')
+        .doc(widget.productId)
+        .update({
+      'totalPrice' : proAmount*widget.productPrice,
     });
   }
 
@@ -111,6 +121,13 @@ class _ProductItemInCartState extends State<ProductItemInCart> {
                 '${widget.productPrice}\$',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
+              SizedBox(
+                height: deviceHeight * 0.02,
+              ),
+              Text(
+                'total: ${widget.productPrice * productAmount}\$',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
             ],
           ),
           Spacer(),
@@ -144,7 +161,7 @@ class _ProductItemInCartState extends State<ProductItemInCart> {
                       }),
                   Container(
                     child: Text(
-                      widget.productAmount.toString(),
+                      productAmount.toString(),
                       style: TextStyle(
                         color: Theme.of(context).accentColor,
                         fontSize: 16,

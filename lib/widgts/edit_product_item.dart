@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_image/firebase_image.dart';
 import 'package:flutter/material.dart';
 import 'package:home_plant/screens/edit_product_screen.dart';
 
@@ -71,7 +72,7 @@ class EditProductItem extends StatelessWidget {
             ),
             CircleAvatar(
               radius: 30,
-              backgroundImage: NetworkImage(productImage,),
+              backgroundImage: FirebaseImage('gs://home-plant.appspot.com/${productImage}'),
             ),
             SizedBox(
               width: deviceWidth * 0.01,
@@ -99,7 +100,7 @@ class EditProductItem extends StatelessWidget {
               onPressed: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context)=>EditProductScreen(
                   productName: productName,
-                  productImageLink: productImage,
+                  productImagePath: productImage,
                   productKind: productKind,
                   productPrice: productPrice,
                   productId: productId,

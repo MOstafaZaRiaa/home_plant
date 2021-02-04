@@ -23,7 +23,7 @@ class MyProductScreen extends StatelessWidget {
             itemCount: products.length,
             itemBuilder: (context, index) => EditProductItem(
                 productName: products[index]['productName'],
-                productImage: products[index]['image_url'],
+                productImage: products[index]['imagePath'],
                 productPrice: products[index]['productPrice'].toString(),
                 productId: products[index]['productId'],
               productKind: products[index]['productKind'],

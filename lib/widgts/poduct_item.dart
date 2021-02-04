@@ -115,6 +115,7 @@ class _ProductItemState extends State<ProductItem> {
         'productPrice': widget.productPrice,
         'imagePath': widget.productImagePath,
         'productAmount' : 1,
+        'totalPrice' : widget.productPrice,
       });
       print('pro is added');
       Scaffold.of(context).showSnackBar(
