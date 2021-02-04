@@ -28,6 +28,10 @@ class ProductItemInCart extends StatefulWidget {
 class _ProductItemInCartState extends State<ProductItemInCart> {
   @override
   int productAmount = 1;
+  initState(){
+    productAmount = widget.productAmount;
+    super.initState();
+  }
   Future<void> deleteFromCart(BuildContext context)async{
 
     await FirebaseFirestore.instance
@@ -161,7 +165,7 @@ class _ProductItemInCartState extends State<ProductItemInCart> {
                       }),
                   Container(
                     child: Text(
-                      productAmount.toString(),
+                      widget.productAmount.toString(),
                       style: TextStyle(
                         color: Theme.of(context).accentColor,
                         fontSize: 16,
