@@ -38,6 +38,19 @@ class _CartScreenState extends State<CartScreen> {
               );
             }
             final products = snapshot.data.docs;
+
+            FirebaseFirestore.instance
+                .collection('users')
+                .doc(user.uid)
+                .collection('cart')
+                .get()
+                .then((QuerySnapshot querySnapshot) => {
+              querySnapshot.docs.forEach((doc) {
+                total = total + doc['totalPrice'] ;
+              }),
+            });
+
+
             return Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -87,7 +100,9 @@ class _CartScreenState extends State<CartScreen> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => CheckOutScreen(
-                                  int: total,
+                                  totalPrice: total.toDouble(),
+                                  user: user,
+                                  snapshot: snapshot,
                                 ),
                               ),
                             );

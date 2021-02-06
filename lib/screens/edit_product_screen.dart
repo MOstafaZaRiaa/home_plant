@@ -227,7 +227,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                 //product description
                 TextFormField(
                   textInputAction: TextInputAction.next,
-                  maxLines: 4,
+                  maxLines: 20,
+                  minLines: 5,
                   initialValue: widget.productDescription,
                   decoration: InputDecoration(
                     labelText: 'description',

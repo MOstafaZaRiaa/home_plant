@@ -173,7 +173,8 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 //product description
                 TextFormField(
                   textInputAction: TextInputAction.next,
-                  maxLines: 4,
+                  maxLines: 20,
+                  minLines: 5,
                   decoration: InputDecoration(
                     labelText: 'description',
                   ),
