@@ -1,12 +1,12 @@
-
 import 'package:flutter/material.dart';
+import 'package:home_plant/screens/confirmation_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-enum stateOfBuy {onDelivery,byVisa}
+enum stateOfBuy { onDelivery, byVisa }
 stateOfBuy valueOfStateBuy = stateOfBuy.onDelivery;
 
 class CheckOutScreen extends StatefulWidget {
   @override
-
   final double totalPrice;
   final user;
   final snapshot;
@@ -21,15 +21,64 @@ class CheckOutScreen extends StatefulWidget {
 }
 
 class _CheckOutScreenState extends State<CheckOutScreen> {
+  bool isLoading=false;
   final _formKey = GlobalKey<FormState>();
-  TextEditingController addressController = new TextEditingController();
-  void pay(BuildContext context){
-    if(valueOfStateBuy == stateOfBuy.byVisa){
+  final _addressFormKey = GlobalKey<FormState>();
+
+  Future<void> pay(BuildContext context) async {
+    setState(() {
+      isLoading=true;
+    });
+    final isAddressValid = _addressFormKey.currentState.validate();
+
+    if (valueOfStateBuy == stateOfBuy.byVisa) {
       final isValid = _formKey.currentState.validate();
-      if(isValid){
+      if (isValid) {
         _formKey.currentState.save();
-        Scaffold.of(context).showSnackBar(SnackBar(content: Text('Your is placing now...'),),);
+        //delete data from cart
+        WriteBatch batch = FirebaseFirestore.instance.batch();
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(widget.user.uid)
+            .collection('cart')
+            .get()
+            .then((querySnapshot) {
+          querySnapshot.docs.forEach((document) {
+            batch.delete(document.reference);
+          });
+          return batch.commit();
+        });
       }
+      setState(() {
+        isLoading=false;
+      });
+    }
+    if (valueOfStateBuy == stateOfBuy.onDelivery && isAddressValid) {
+      //delete data from cart
+      WriteBatch batch = FirebaseFirestore.instance.batch();
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(widget.user.uid)
+          .collection('cart')
+          .get()
+          .then((querySnapshot) {
+        querySnapshot.docs.forEach((document) {
+          batch.delete(document.reference);
+        });
+        return batch.commit();
+      });
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) {
+            return ConfirmationScreen();
+          },
+        ),
+      );
+      setState(() {
+        isLoading=false;
+      });
     }
 
   }
@@ -98,20 +147,20 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
               ),
             ),
             RadioListTile(
-              title: Text('Pay when it deliverd.'),
+              title: const Text('Pay when it deliverd.'),
               value: stateOfBuy.onDelivery,
               groupValue: valueOfStateBuy,
-              onChanged: (value){
+              onChanged: (value) {
                 setState(() {
                   valueOfStateBuy = value;
                 });
               },
             ),
             RadioListTile(
-              title: Text('Pay with Visa/Master Card.'),
+              title: const Text('Pay with Visa/Master Card.'),
               value: stateOfBuy.byVisa,
               groupValue: valueOfStateBuy,
-              onChanged: (value){
+              onChanged: (value) {
                 setState(() {
                   valueOfStateBuy = value;
                 });
@@ -120,90 +169,131 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
             Form(
               key: _formKey,
               child: Column(
-              children: [
-                Container(
-                  margin: EdgeInsets.symmetric(
-                    horizontal: 10,
-                  ),
-                  child: TextFormField(
-                    textInputAction: TextInputAction.next,
-                    keyboardType: TextInputType.number,
-                    maxLength: 16,
-                    decoration: InputDecoration(labelText: 'Card number',),
-                    validator: (value){
-                      if(int.tryParse(value)==null || int.tryParse(value)<16){
-                        return 'Card number must be less 16 numbers';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Container(
-                      width: deviceWidth*0.15,
-                      child: TextFormField(
-                        textInputAction: TextInputAction.next,
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(labelText: 'Expire date',),
-                        maxLength: 4,
-                        validator: (value){
-                          if(int.tryParse(value)==null || int.tryParse(value)<4){
-                            return 'Card number must be less 4 numbers';
-                          }
-                          return null;
-                        },
-                      ),
+                children: [
+                  Container(
+                    margin: EdgeInsets.symmetric(
+                      horizontal: 10,
                     ),
-                    Container(
-                      width: deviceWidth*0.1,
-                      child: TextFormField(
-                        textInputAction: TextInputAction.next,
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(labelText: 'Cvv',),
-                        maxLength: 3,
-                        validator: (value){
-                          if(int.tryParse(value)==null || int.tryParse(value)<3){
-                            return 'Card number must be less 3 number';
-                          }
-                          return null;
-                        },
+                    child: TextFormField(
+                      textInputAction: TextInputAction.next,
+                      keyboardType: TextInputType.number,
+                      maxLength: 16,
+                      decoration: InputDecoration(
+                        labelText: 'Card number',
                       ),
+                      validator: (value) {
+                        if (int.tryParse(value) == null ||
+                            int.tryParse(value) < 16) {
+                          return 'Card number must be less 16 numbers';
+                        }
+                        return null;
+                      },
                     ),
-                  ],
-                ),
-              ],
-            ),),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Container(
+                        width: deviceWidth * 0.15,
+                        child: TextFormField(
+                          textInputAction: TextInputAction.next,
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(
+                            labelText: 'Expire date',
+                          ),
+                          maxLength: 4,
+                          validator: (value) {
+                            if (int.tryParse(value) == null ||
+                                int.tryParse(value) < 4) {
+                              return 'Card number must be less 4 numbers';
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                      Container(
+                        width: deviceWidth * 0.1,
+                        child: TextFormField(
+                          textInputAction: TextInputAction.next,
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(
+                            labelText: 'Cvv',
+                          ),
+                          maxLength: 3,
+                          validator: (value) {
+                            if (int.tryParse(value) == null ||
+                                int.tryParse(value) < 3) {
+                              return 'Card number must be less 3 number';
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
             Container(
               margin: EdgeInsets.symmetric(
                 horizontal: 10,
               ),
-              child: TextFormField(
-                minLines: 3,
-                maxLines: 5,
-                controller: addressController,
-                decoration: InputDecoration(
-                  labelText: 'Address',
+              child: Form(
+                key: _addressFormKey,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      minLines: 3,
+                      maxLines: 5,
+                      decoration: InputDecoration(
+                        labelText: 'Address',
+                      ),
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'Address can\'t be null.';
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      textInputAction: TextInputAction.next,
+                      keyboardType: TextInputType.number,
+                      maxLength: 11,
+                      decoration: InputDecoration(
+                        labelText: 'Phone number',
+                      ),
+                      validator: (value) {
+                        if (int.tryParse(value) == null ||
+                            int.tryParse(value) < 11) {
+                          return 'Invalid number';
+                        }
+                        return null;
+                      },
+                    ),
+                  ],
                 ),
               ),
             ),
-            SizedBox(height: 25,),
+            SizedBox(
+              height: 25,
+            ),
             InkWell(
-              child: Builder(builder:(context)=> FlatButton(
+              child: Builder(
+                builder: (context) => FlatButton(
                   minWidth: double.infinity,
                   padding: EdgeInsets.all(
                       MediaQuery.of(context).size.height * 0.024),
-                  child: Text(
+                  child: isLoading? Center(child: Center(
+                    child: CircularProgressIndicator(),
+                  ),) : Text(
                     'Pay ${widget.totalPrice}\$',
                     style: TextStyle(
-                        color: Theme.of(context)
-                            .accentTextTheme
-                            .headline1
-                            .color),
+                        color:
+                            Theme.of(context).accentTextTheme.headline1.color),
                   ),
-                  onPressed:(){
-                    pay(context);
+                  onPressed: () async{
+                    await pay(context);
+                    print(isLoading);
                   },
                   color: Theme.of(context).primaryColor,
                 ),
@@ -214,4 +304,5 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
       ),
     );
   }
+
 }

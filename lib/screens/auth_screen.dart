@@ -22,6 +22,9 @@ class _AuthScreenState extends State<AuthScreen> {
   final _formKey = GlobalKey<FormState>();
 
   Future<void> trySubmit(BuildContext ctx) async{
+    setState(() {
+      _isLoading=true;
+    });
     FocusScope.of(ctx).unfocus();
     final isValid = _formKey.currentState.validate();
     _formKey.currentState.save();
@@ -34,6 +37,7 @@ class _AuthScreenState extends State<AuthScreen> {
         ),
       );
     }else {
+
       UserCredential userCredential;
       try {
         if (_isLogin) {
@@ -42,12 +46,9 @@ class _AuthScreenState extends State<AuthScreen> {
             email: _userEmail.trim(),
             password: _userPassword.trim(),
           );
-          Scaffold.of(ctx).showSnackBar(
-          SnackBar(
-            content: Text('Log in now....'),
-            backgroundColor: Theme.of(ctx).primaryColor,
-          ),);
-
+          setState(() {
+            _isLoading=false;
+          });
         } else {
           //create a new user
           userCredential = await _auth.createUserWithEmailAndPassword(
@@ -69,6 +70,9 @@ class _AuthScreenState extends State<AuthScreen> {
             'image_url': userDummyImage,
           });
 
+          setState(() {
+            _isLoading=false;
+          });
         }
       } on FirebaseException catch (err) {
         var errorMessage = 'An error occurred , Please check credential';
@@ -279,7 +283,7 @@ class _AuthScreenState extends State<AuthScreen> {
                         textColor:
                             Theme.of(context).accentTextTheme.headline1.color,
                         color: Theme.of(context).primaryColor,
-                        child: Text(_isLogin?'Sign in':'Signup'),
+                        child: _isLoading? Center(child: CircularProgressIndicator(),) : Text(_isLogin?'Sign in':'Signup',),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15)),
                         onPressed: ()=>trySubmit(context),

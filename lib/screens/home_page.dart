@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:feature_discovery/feature_discovery.dart';
 
 import 'package:home_plant/home_screen_tabs/accessories_tab.dart';
 import 'package:home_plant/home_screen_tabs/all_tab.dart';
 import 'package:home_plant/home_screen_tabs/plants_tab.dart';
+import 'package:home_plant/home_screen_tabs/pots_tab.dart';
 import 'package:home_plant/home_screen_tabs/flowers_tab.dart';
 import 'package:home_plant/widgts/bottom_navigation_bar.dart';
 import 'package:home_plant/widgts/cart_widget.dart';
@@ -46,6 +46,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       text: 'Plants',
     ),
     Tab(
+      text: 'Pots',
+    ),
+    Tab(
       text: 'Flowers',
     ),
     Tab(
@@ -56,12 +59,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     _tabController = TabController(vsync: this, length: myTabs.length);
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      FeatureDiscovery.discoverFeatures(context, <String>[
-        'bottomNavigation',
-        'cart',
-      ]);
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    //   FeatureDiscovery.discoverFeatures(context, <String>[
+    //     'bottomNavigation',
+    //     'cart',
+    //   ]);
+    // });
   }
 
   @override
@@ -104,12 +107,14 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           ? TabBarView(controller: _tabController, children: [
               AllTab(),
               PlantsTab(),
+              PotsTab(),
               FlowersTab(),
               AccessoriesTab(),
             ]) //tapBarChild
           : Center(
               child: _bottomNavigationBarScreens
-                  .elementAt(_bottomNavigatorSelectedIndex)),
+                  .elementAt(_bottomNavigatorSelectedIndex),
+      ),
       bottomNavigationBar: BottomNavigation(
         getSelectedScreenFromBottomNavigation:
             getSelectedScreenFromBottomNavigation,

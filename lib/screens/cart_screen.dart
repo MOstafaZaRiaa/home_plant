@@ -39,7 +39,7 @@ class _CartScreenState extends State<CartScreen> {
             }
             final products = snapshot.data.docs;
 
-            FirebaseFirestore.instance
+             FirebaseFirestore.instance
                 .collection('users')
                 .doc(user.uid)
                 .collection('cart')

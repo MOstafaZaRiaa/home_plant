@@ -90,13 +90,17 @@ class _MyAppState extends State<MyApp> {
             return SplashScreen();
           }
           if (snapshot.hasData) {
-            return FeatureDiscovery(
-              child: HomePage(),
-            );
+            // return FeatureDiscovery(
+            //   child: HomePage(),
+            // );
+            return HomePage();
           }
           return AuthScreen();
         },
       ),
+      routes: {
+
+      },
     );
   }
 }

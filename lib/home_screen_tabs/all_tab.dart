@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:home_plant/widgts/poduct_item.dart';
+import 'package:home_plant/screens/categores_screens/palnts_screen.dart';
+import 'package:home_plant/screens/categores_screens/accessories_screen.dart';
+import 'package:home_plant/screens/categores_screens/flowers_screens.dart';
+import 'package:home_plant/screens/categores_screens/pots_screens.dart';
 
 class AllTab extends StatelessWidget {
   @override
@@ -16,6 +21,7 @@ class AllTab extends StatelessWidget {
             deviceHeight: deviceHeight,
             deviceWidth: deviceWidth,
             categoryName: 'Plants',
+            categoryScreen: PlantsScreen(),
             stream: FirebaseFirestore.instance
                 .collection('products')
                 .where(
@@ -29,6 +35,7 @@ class AllTab extends StatelessWidget {
             deviceHeight: deviceHeight,
             deviceWidth: deviceWidth,
             categoryName: 'Flowers',
+            categoryScreen: FlowersScreen(),
             stream: FirebaseFirestore.instance
                 .collection('products')
                 .where(
@@ -42,6 +49,7 @@ class AllTab extends StatelessWidget {
             deviceHeight: deviceHeight,
             deviceWidth: deviceWidth,
             categoryName: 'Accessories',
+            categoryScreen: AccessoriesScreen(),
             stream: FirebaseFirestore.instance
                 .collection('products')
                 .where(
@@ -55,6 +63,7 @@ class AllTab extends StatelessWidget {
             deviceHeight: deviceHeight,
             deviceWidth: deviceWidth,
             categoryName: 'Pot',
+            categoryScreen: PotsScreen(),
             stream: FirebaseFirestore.instance
                 .collection('products')
                 .where(
@@ -76,6 +85,7 @@ class RowOfDifferentProducts extends StatelessWidget {
       @required this.deviceHeight,
       @required this.deviceWidth,
       @required this.categoryName,
+      @required this.categoryScreen,
       @required this.stream})
       : super(key: key);
 
@@ -83,6 +93,7 @@ class RowOfDifferentProducts extends StatelessWidget {
   final double deviceWidth;
   final String categoryName;
   final Stream stream;
+  final Widget categoryScreen;
 
   @override
   Widget build(BuildContext context) {
@@ -103,7 +114,11 @@ class RowOfDifferentProducts extends StatelessWidget {
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(context, MaterialPageRoute(
+                            builder: (context)=>categoryScreen,
+                          ));
+                        },
                         child: Text(
                           'See more >',
                           style: TextStyle(

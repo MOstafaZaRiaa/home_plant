@@ -104,6 +104,7 @@ class _ProductItemState extends State<ProductItem> {
 
   Future<void> addToCart(BuildContext context)async{
 
+    try{
       await FirebaseFirestore.instance
           .collection('users')
           .doc(user.uid)
@@ -117,7 +118,6 @@ class _ProductItemState extends State<ProductItem> {
         'productAmount' : 1,
         'totalPrice' : widget.productPrice,
       });
-      print('pro is added');
       Scaffold.of(context).showSnackBar(
         SnackBar(
           content: Text(
@@ -129,6 +129,20 @@ class _ProductItemState extends State<ProductItem> {
           backgroundColor: Theme.of(context).primaryColor,
         ),
       );
+    }on FirebaseException catch(error){
+      Scaffold.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            error.message,
+            style: TextStyle(
+              color: Theme.of(context).accentTextTheme.headline1.color,
+            ),
+          ),
+          backgroundColor: Theme.of(context).errorColor,
+        ),
+      );
+    }
+
 
   }
 
