@@ -17,8 +17,8 @@ Future<void> main() async {
     MultiProvider(
       providers: [
         // Used MultiProvider incase you have other providers
-        ChangeNotifierProvider<ThemeProvider>(
-          create: (_) => ThemeProvider(),
+        ChangeNotifierProvider<ThemeNotifier>(
+          create: (_) => ThemeNotifier(),
         ),
       ],
       child: MyApp(),
@@ -43,63 +43,35 @@ class _MyAppState extends State<MyApp> {
   //       .setIsDarkThemeEnabled(_isDarkThemeEnabled);
   //   return _isDarkThemeEnabled;
   // }
-  @override
-  void initState() {
-    // getData();
-    super.initState();
-  }
+
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Home Plant',
-      theme: themeEnabled
-          ? ThemeData.dark().copyWith(
-              accentTextTheme: TextTheme(
-                headline1: TextStyle(
-                  color: Color(0xFFFFFFFF),
-                ),
-              ),
-              textTheme: TextTheme(
-                headline1: TextStyle(
-                  color: Color(0xFFFFFFFF),
-                ),
-              ),
-            )
-          : ThemeData(
-              primaryColor: Color(0xFF0B9E74),
-              accentColor: Color(0xFFFEC182),
-              backgroundColor: Color(0xFFF8F9FB),
-              textTheme: TextTheme(
-                headline1: TextStyle(
-                  color: Color(0xFF0B9E74),
-                ),
-              ),
-              accentTextTheme: TextTheme(
-                headline1: TextStyle(
-                  color: Color(0xFFFFFFFF),
-                ),
-              ),
-              fontFamily: 'Roboto',
-            ),
-      home: StreamBuilder(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return SplashScreen();
-          }
-          if (snapshot.hasData) {
-            // return FeatureDiscovery(
-            //   child: HomePage(),
-            // );
-            return HomePage();
-          }
-          return AuthScreen();
-        },
-      ),
-      routes: {
+    return Consumer<ThemeNotifier>(
+      builder: (context, ThemeNotifier notifier, child){
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Home Plant',
+          theme: notifier.darkTheme ? dark : light,
+          home: StreamBuilder(
+            stream: FirebaseAuth.instance.authStateChanges(),
+            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return SplashScreen();
+              }
+              if (snapshot.hasData) {
+                // return FeatureDiscovery(
+                //   child: HomePage(),
+                // );
+                return HomePage();
+              }
+              return AuthScreen();
+            },
+          ),
+          routes: {
 
+          },
+        );
       },
     );
   }

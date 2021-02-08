@@ -179,6 +179,7 @@ class _ProductItemState extends State<ProductItem> {
       onTap: inProductClicked,
       child: PhysicalModel(
         color: Theme.of(context).backgroundColor,
+
         elevation: 5,
         borderRadius: BorderRadius.circular(20),
         child: Container(
@@ -254,7 +255,7 @@ class _ProductItemState extends State<ProductItem> {
                     widget.isProductFavourite
                         ? Icons.favorite
                         : Icons.favorite_border,
-                    color: Theme.of(context).accentTextTheme.headline1.color,
+                    color: Theme.of(context).accentColor,
                   ),
                   onPressed: () {
                     addToFavorite(context);

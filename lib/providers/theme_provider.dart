@@ -1,22 +1,68 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class ThemeProvider extends ChangeNotifier {
+ThemeData light = ThemeData(
+  primaryColor: Color(0xFF0B9E74),
+  accentColor: Color(0xFFFEC182),
+  backgroundColor: Color(0xFFF8F9FB),
+  textTheme: TextTheme(
+    headline1: TextStyle(
+      color: Color(0xFF0B9E74),
+    ),
+  ),
+  accentTextTheme: TextTheme(
+    headline1: TextStyle(
+      color: Color(0xFFFFFFFF),
+    ),
+  ),
+  fontFamily: 'Roboto',
+);
 
-  bool _isDarkThemeEnabled = false;
-  bool get isDarkThemeEnabled {
-    return _isDarkThemeEnabled;
+ThemeData dark = ThemeData.dark().copyWith(
+  accentTextTheme: TextTheme(
+    headline1: TextStyle(
+      color: Color(0xFFFFFFFF),
+    ),
+  ),
+  textTheme: TextTheme(
+    headline1: TextStyle(
+      color: Color(0xFFFFFFFF),
+    ),
+  ),
+);
+
+class ThemeNotifier extends ChangeNotifier {
+  final String key = "theme";
+  SharedPreferences _prefs;
+  bool _darkTheme;
+
+  bool get darkTheme => _darkTheme;
+
+  ThemeNotifier() {
+    _darkTheme = true;
+    _loadFromPrefs();
   }
 
-  Future<void> setIsDarkThemeEnabled(bool isDarkThemeEnabled)async{
-    _isDarkThemeEnabled = isDarkThemeEnabled;
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool('MODE',isDarkThemeEnabled);
+  toggleTheme() {
+    _darkTheme = !_darkTheme;
+    _saveToPrefs();
     notifyListeners();
   }
-  // Future<void> loadData()async{
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   _isDarkThemeEnabled = prefs.getBool('MODE') ?? true;
-  //
-  // }
+
+  _initPrefs() async {
+    if(_prefs == null)
+      _prefs = await SharedPreferences.getInstance();
+  }
+
+  _loadFromPrefs() async {
+    await _initPrefs();
+    _darkTheme = _prefs.getBool(key) ?? true;
+    notifyListeners();
+  }
+
+  _saveToPrefs()async {
+    await _initPrefs();
+    _prefs.setBool(key, _darkTheme);
+  }
+
 }

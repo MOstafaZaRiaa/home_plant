@@ -62,9 +62,13 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
           .collection('cart')
           .get()
           .then((querySnapshot) {
+
+
+
         querySnapshot.docs.forEach((document) {
           batch.delete(document.reference);
         });
+
         return batch.commit();
       });
 

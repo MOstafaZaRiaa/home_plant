@@ -64,7 +64,7 @@ class EditProductItem extends StatelessWidget {
       width: double.infinity,
       height: deviceHeight * 0.1,
       child: Card(
-        shadowColor: Theme.of(context).primaryColor,
+
         child: Row(
           children: [
             SizedBox(

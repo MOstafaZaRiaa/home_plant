@@ -1,31 +1,62 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+
+import 'package:min_id/min_id.dart';
+
 import 'package:home_plant/screens/home_page.dart';
 
 class ConfirmationScreen extends StatelessWidget {
   @override
+  final id = MinId.getId('{6d}');
+
   Widget build(BuildContext context) {
+    final deviceHeight= MediaQuery.of(context).size.height;
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            ClipPath(
-              clipper: ClipPathClass(),
-              child: ColorFiltered(
-                colorFilter: ColorFilter.mode(
-                  Theme.of(context).primaryColor,
-                  BlendMode.softLight,
-                ),
-                child: ImageFiltered(
-                  imageFilter: ImageFilter.blur(
-                    sigmaY: 4,
-                    sigmaX: 4,
+            Stack(children: [
+              ClipPath(
+                clipper: ClipPathClass(),
+                child: ColorFiltered(
+                  colorFilter: ColorFilter.mode(
+                    Theme.of(context).primaryColor,
+                    BlendMode.softLight,
                   ),
-                  child: Image.asset('assets/images/plant.jpg'),
+                  child: ImageFiltered(
+                    imageFilter: ImageFilter.blur(
+                      sigmaY: 4,
+                      sigmaX: 4,
+                    ),
+                    child: Image.asset('assets/images/plant.jpg'),
+                  ),
                 ),
               ),
-            ),
+              Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(height: deviceHeight*0.2,),
+                    Icon(
+                      Icons.check,
+                      size: 180,
+                      color: Theme.of(context).accentTextTheme.headline1.color,
+                    ),
+                    Text(
+                      'Your Payment is\n     Successful.',
+                      style: TextStyle(
+                        color:
+                            Theme.of(context).accentTextTheme.headline1.color,
+                        fontSize: 45,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ]),
             RaisedButton(
               child: Text(
                 'Continue shopping',
@@ -35,8 +66,12 @@ class ConfirmationScreen extends StatelessWidget {
               color: Theme.of(context).primaryColor,
               onPressed: () {
                 Navigator.pushReplacement(
-                    context, MaterialPageRoute(builder: (BuildContext context) => HomePage(),),);
-                },
+                  context,
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => HomePage(),
+                  ),
+                );
+              },
             ),
           ],
         ),

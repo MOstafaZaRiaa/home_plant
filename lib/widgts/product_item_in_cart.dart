@@ -112,7 +112,10 @@ class _ProductItemInCartState extends State<ProductItemInCart> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                widget.productName,
+                widget.productName.length < 18
+                    ? widget.productName
+                    : widget.productName.substring(0, 18),
+
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,

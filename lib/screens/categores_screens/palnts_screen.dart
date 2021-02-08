@@ -12,7 +12,7 @@ class PlantsScreen extends StatelessWidget {
           .collection('products')
           .where(
         'productKind',
-        isEqualTo: 'Accessories',
+        isEqualTo: 'Plant',
       )
           .snapshots(),
     );

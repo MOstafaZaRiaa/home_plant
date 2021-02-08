@@ -51,8 +51,6 @@ class _DrawerScreenState extends State<DrawerScreen> {
   }
 
   Widget build(BuildContext context) {
-    var theme = Provider.of<ThemeProvider>(context);
-    bool _isDarkThemeEnabled = theme.isDarkThemeEnabled;
     User user = FirebaseAuth.instance.currentUser;
     return StreamBuilder(
         stream: FirebaseFirestore.instance
@@ -180,23 +178,24 @@ class _DrawerScreenState extends State<DrawerScreen> {
                   ),
                   Spacer(),
                   //theme mode
-                  ListTile(
-                    title: Text(
-                      'Dark mode',
-                      style: TextStyle(
-                          color: Theme.of(context).textTheme.headline1.color,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    trailing: Switch(
-                      value: _isDarkThemeEnabled,
-                      onChanged: (value) {
-                        setState(() {
-                          _isDarkThemeEnabled = !_isDarkThemeEnabled;
-                          theme.setIsDarkThemeEnabled(value);
-                        });
-                      },
-                      activeTrackColor: Theme.of(context).accentColor,
-                      activeColor: Theme.of(context).primaryColor,
+                  Consumer<ThemeNotifier>(
+                    builder: (context,notifier,child) => ListTile(
+                      title: Text(
+                        'Dark mode',
+                        style: TextStyle(
+                            color: Theme.of(context).textTheme.headline1.color,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      trailing: Switch(
+                        value: notifier.darkTheme,
+                        onChanged: (value) {
+                          setState(() {
+                            notifier.toggleTheme();
+                          });
+                        },
+                        activeTrackColor: Theme.of(context).accentColor,
+                        activeColor: Theme.of(context).primaryColor,
+                      ),
                     ),
                   ),
                   //logout
