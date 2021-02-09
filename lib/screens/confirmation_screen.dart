@@ -2,13 +2,10 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
-import 'package:min_id/min_id.dart';
-
 import 'package:home_plant/screens/home_page.dart';
 
 class ConfirmationScreen extends StatelessWidget {
   @override
-  final id = MinId.getId('{6d}');
 
   Widget build(BuildContext context) {
     final deviceHeight= MediaQuery.of(context).size.height;

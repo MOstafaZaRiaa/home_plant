@@ -2,10 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_image/firebase_image.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:home_plant/providers/theme_provider.dart';
+import 'package:home_plant/getX/theme.dart';
 import 'package:home_plant/screens/my_products_screen.dart';
 import 'package:home_plant/screens/profile_screen.dart';
-import 'package:provider/provider.dart';
+import 'package:get/get.dart';
 
 import 'add_product_screen.dart';
 
@@ -52,6 +52,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
 
   Widget build(BuildContext context) {
     User user = FirebaseAuth.instance.currentUser;
+    final controller = Get.put(ThemeProvide());
     return StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('users')
@@ -119,7 +120,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                       color: Theme.of(context).textTheme.headline1.color,
                     ),
                     title: Text(
-                      'Edit your profile',
+                      'Profile',
                       style: TextStyle(
                           color: Theme.of(context).textTheme.headline1.color),
                     ),
@@ -178,8 +179,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                   ),
                   Spacer(),
                   //theme mode
-                  Consumer<ThemeNotifier>(
-                    builder: (context,notifier,child) => ListTile(
+                  SimpleBuilder(builder: (_) => ListTile(
                       title: Text(
                         'Dark mode',
                         style: TextStyle(
@@ -187,12 +187,8 @@ class _DrawerScreenState extends State<DrawerScreen> {
                             fontWeight: FontWeight.bold),
                       ),
                       trailing: Switch(
-                        value: notifier.darkTheme,
-                        onChanged: (value) {
-                          setState(() {
-                            notifier.toggleTheme();
-                          });
-                        },
+                        value: controller.isDark,
+                        onChanged:controller.changeTheme,
                         activeTrackColor: Theme.of(context).accentColor,
                         activeColor: Theme.of(context).primaryColor,
                       ),

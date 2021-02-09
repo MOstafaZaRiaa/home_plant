@@ -5,7 +5,7 @@ class SplashScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       body: Center(
-        child: Text('Loading...'),
+        child: Text('Loading...',style: TextStyle(color: Theme.of(context).accentTextTheme.headline1.color,)),
       ),
     );
   }
