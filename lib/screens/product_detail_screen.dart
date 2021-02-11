@@ -32,8 +32,7 @@ class ProductDetailScreen extends StatefulWidget {
 
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
   User user = FirebaseAuth.instance.currentUser;
-  Future<void> addToCart(BuildContext context)async{
-
+  Future<void> addToCart(BuildContext context) async {
     await FirebaseFirestore.instance
         .collection('users')
         .doc(user.uid)
@@ -44,7 +43,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       'productId': widget.productId,
       'productPrice': widget.productPrice,
       'imagePath': widget.productImagePath,
-      'productAmount' : 1,
+      'productAmount': 1,
     });
     print('pro is added');
     Scaffold.of(context).showSnackBar(
@@ -58,7 +57,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         backgroundColor: Theme.of(context).primaryColor,
       ),
     );
-
   }
 
   Widget build(BuildContext context) {
@@ -116,6 +114,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         );
       }
     }
+
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -159,7 +158,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
           SliverList(
             delegate: SliverChildListDelegate([
               SizedBox(
-                height: deviceHeight*0.02,
+                height: deviceHeight * 0.02,
               ),
               Container(
                 margin: EdgeInsets.symmetric(horizontal: deviceWidth * 0.03),
@@ -175,18 +174,16 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       ),
                     ),
                     Builder(
-                        builder: (context)=> IconButton(
-                          icon: Icon(
-                            widget.isProductFavourite
-                                ? Icons.favorite
-                                : Icons.favorite_border,
-                            color: Theme.of(context).primaryColor,
-                          ),
-                          onPressed: () =>
-                              addToFavorite(context),
-
-                        )
-                    )],
+                        builder: (context) => IconButton(
+                              icon: Icon(
+                                widget.isProductFavourite
+                                    ? Icons.favorite
+                                    : Icons.favorite_border,
+                                color: Theme.of(context).primaryColor,
+                              ),
+                              onPressed: () => addToFavorite(context),
+                            ))
+                  ],
                 ),
               ),
               Container(
@@ -212,17 +209,25 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   ],
                 ),
               ),
-              SizedBox(height: deviceHeight*0.8,),
+              SizedBox(
+                height: deviceHeight * 0.1,
+              ),
               InkWell(
-                child: FlatButton(
-                  padding: EdgeInsets.all(MediaQuery.of(context).size.height*0.024),
-                  child: Text(
-                    'ADD TO CART',
-                    style: TextStyle(
-                        color: Theme.of(context).accentTextTheme.headline1.color),
+                child: Builder(
+                  builder: (context) => FlatButton(
+                    padding: EdgeInsets.all(
+                        MediaQuery.of(context).size.height * 0.024),
+                    child: Text(
+                      'ADD TO CART',
+                      style: TextStyle(
+                          color: Theme.of(context)
+                              .accentTextTheme
+                              .headline1
+                              .color),
+                    ),
+                    onPressed: () => addToCart(context),
+                    color: Theme.of(context).primaryColor,
                   ),
-                  onPressed: () {},
-                  color: Theme.of(context).primaryColor,
                 ),
               ),
             ]),

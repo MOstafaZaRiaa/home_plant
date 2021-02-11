@@ -35,6 +35,7 @@ ThemeData dark = ThemeData.dark().copyWith(
 );
 
 class ThemeProvide extends GetxController {
+  
   final box = GetStorage();
   bool get isDark => box.read('darkmode') ?? false;
   ThemeData get theme => isDark ? dark : light;

@@ -5,7 +5,6 @@ import 'package:get_storage/get_storage.dart';
 import 'package:home_plant/getX/theme.dart';
 import 'package:get/get.dart';
 
-import 'package:provider/provider.dart';
 import 'getX/onboarding.dart';
 
 Future<void> main() async {

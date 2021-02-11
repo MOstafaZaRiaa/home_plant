@@ -39,6 +39,7 @@ dependencies:
   introduction_screen:
   flutter_native_splash:
   get_storage:
+  get:
 
 flutter_native_splash:
   color: "#0B9E74"

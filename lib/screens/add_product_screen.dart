@@ -37,6 +37,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
 
     });
   }
+
   Future<void> uploadImage()async{
       //upload user image to firestorage server
       final ref = FirebaseStorage.instance
@@ -62,8 +63,16 @@ class _AddProductScreenState extends State<AddProductScreen> {
     }
     if(isValid && newPickedImage != null ){
       _formKey.currentState.save();
-      try{
+      //create search index
+      List<String> splitList= productName.split(" ");
+      List<String> indexList= [];
+      for(int i =0;i<splitList.length;i++){
+        for(int y =1;y<splitList[i].length + 1 ;y++){
+          indexList.add(splitList[i].substring(0,y).toLowerCase());
+        }
+      }
 
+      try{
         Scaffold.of(ctx).showSnackBar(SnackBar(content: Text('Uploading...',),backgroundColor: Theme.of(context).primaryColor,),);
         await uploadImage();
         // //upload product to firebase firestore
@@ -76,6 +85,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
           'productDescription': productDescription,
           'productKind': productKind,
           'imagePath': _productImagePath,
+          'searchIndex':indexList,
         });
         Scaffold.of(ctx).showSnackBar(SnackBar(content: Text('it\'s done.'),backgroundColor: Theme.of(context).primaryColor,),);
       }on FirebaseException catch (error){

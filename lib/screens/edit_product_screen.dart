@@ -92,6 +92,14 @@ class _EditProductScreenState extends State<EditProductScreen> {
     // }
     if (isValid) {
       _formKey.currentState.save();
+      //create search index
+      List<String> splitList= productName.split(" ");
+      List<String> indexList= [];
+      for(int i =0;i<splitList.length;i++){
+        for(int y =1;y<splitList[i].length + 1 ;y++){
+          indexList.add(splitList[i].substring(0,y).toLowerCase());
+        }
+      }
       try {
         Scaffold.of(ctx).showSnackBar(
           SnackBar(
@@ -113,6 +121,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
           'productDescription': productDescription,
           'productKind': productKind,
           'imagePath': isEditing?_productImagePath:widget.productImagePath,
+          'searchIndex':indexList,
         });
         Scaffold.of(ctx).showSnackBar(
           SnackBar(
