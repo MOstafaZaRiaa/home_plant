@@ -158,6 +158,8 @@ class _DrawerScreenState extends State<DrawerScreen> {
                       );
                     },
                   ),
+                  //edit products
+                  if(user.email == 'test@test.com')
                   ListTile(
                     leading: Icon(
                       Icons.edit_rounded,

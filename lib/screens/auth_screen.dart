@@ -17,7 +17,7 @@ class _AuthScreenState extends State<AuthScreen> {
   bool _isLogin = true;
   bool _isLoading = false;
   static const userDummyImage =
-      'https://firebasestorage.googleapis.com/v0/b/chat-4427c.appspot.com/o/dummy450x450.jpg?alt=media&token=5d35f236-0420-4d47-a94d-b10ed0f50c63';
+      'dummy450x450.jpg';
   final _auth = FirebaseAuth.instance;
   final _formKey = GlobalKey<FormState>();
 
@@ -67,7 +67,7 @@ class _AuthScreenState extends State<AuthScreen> {
               .set({
             'email': _userEmail,
             'username': _userName,
-            'image_url': userDummyImage,
+            'imagePath': userDummyImage,
           });
 
           setState(() {
