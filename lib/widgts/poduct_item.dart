@@ -178,92 +178,94 @@ class _ProductItemState extends State<ProductItem> {
     final deviceWidth = MediaQuery.of(context).size.width;
     return InkWell(
       onTap: inProductClicked,
-      child: PhysicalModel(
-        color: Theme.of(context).backgroundColor,
-
-        elevation: 5,
-        borderRadius: BorderRadius.circular(20),
-        child: Container(
-          padding: EdgeInsets.all(deviceWidth * 0.01),
-          child: Stack(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                    color: Theme.of(context).backgroundColor,
-                    borderRadius: BorderRadius.circular(20)),
-              ),
-              Column(
-                children: [
-                  Expanded(
-                    flex: 3,
-                    child: Container(
-                      height: deviceHeight * 0.155,
-                      width: deviceWidth * 0.3,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                            image: widget.productImagePath == null
-                                ? AssetImage(
-                                    'assets/images/plant_outline_dark.png')
-                                : FirebaseImage(
-                                    'gs://home-plant.appspot.com/${widget.productImagePath}',
-                                  ),
-                            fit: BoxFit.cover,
+      child: Container(
+        margin: EdgeInsets.only(bottom: deviceHeight*0.01,right: deviceWidth*0.01,),
+        child: PhysicalModel(
+          color: Theme.of(context).backgroundColor,
+          elevation: 2,
+          borderRadius: BorderRadius.circular(20),
+          child: Container(
+            padding: EdgeInsets.all(deviceWidth * 0.01),
+            child: Stack(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).backgroundColor,
+                      borderRadius: BorderRadius.circular(20)),
+                ),
+                Column(
+                  children: [
+                    Expanded(
+                      flex: 3,
+                      child: Container(
+                        height: deviceHeight * 0.155,
+                        width: deviceWidth * 0.3,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: widget.productImagePath == null
+                                  ? AssetImage(
+                                      'assets/images/plant_outline_dark.png')
+                                  : FirebaseImage(
+                                      'gs://home-plant.appspot.com/${widget.productImagePath}',
+                                    ),
+                              fit: BoxFit.cover,
+                          ),
+                          color: Theme.of(context).accentColor,
+                          borderRadius: BorderRadius.circular(20),
                         ),
-                        color: Theme.of(context).accentColor,
-                        borderRadius: BorderRadius.circular(20),
                       ),
                     ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              widget.productName.length < 7
-                                  ? widget.productName
-                                  : widget.productName.substring(0, 7),
-                              overflow: TextOverflow.fade,
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
+                    Expanded(
+                      flex: 1,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                widget.productName.length < 8
+                                    ? widget.productName
+                                    : widget.productName.substring(0, 8),
+                                overflow: TextOverflow.fade,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                            ),
-                            Text(
-                              '${widget.productPrice}\$',
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        ),
-                        Builder(builder:(context)=> IconButton(
-                            // alignment: Alignment.centerRight,
-                            icon: Icon(Icons.add_circle_rounded),
-                            onPressed: ()=>addToCart(context),
+                              Text(
+                                '${widget.productPrice}\$',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            ],
                           ),
-                        ),
-                      ],
+                          Builder(builder:(context)=> IconButton(
+                              // alignment: Alignment.centerRight,
+                              icon: Icon(Icons.add_circle_rounded),
+                              onPressed: ()=>addToCart(context),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              Positioned(
-                right: 0,
-                top: 0,
-                child: IconButton(
-                  icon: Icon(
-                    widget.isProductFavourite
-                        ? Icons.favorite
-                        : Icons.favorite_border,
-                    color: Theme.of(context).accentColor,
-                  ),
-                  onPressed: () {
-                    addToFavorite(context);
-                  },
+                  ],
                 ),
-              ),
-            ],
+                Positioned(
+                  right: 0,
+                  top: 0,
+                  child: IconButton(
+                    icon: Icon(
+                      widget.isProductFavourite
+                          ? Icons.favorite
+                          : Icons.favorite_border,
+                      color: Theme.of(context).accentColor,
+                    ),
+                    onPressed: () {
+                      addToFavorite(context);
+                    },
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -220,7 +220,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                       },
                       items: <String>[
                         'Plant',
-                        'Flower',
+                        'Flowers',
                         'Pot',
                         'Accessories',
                       ].map<DropdownMenuItem<String>>((String value) {

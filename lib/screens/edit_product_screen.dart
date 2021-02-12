@@ -274,7 +274,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       },
                       items: <String>[
                         'Plant',
-                        'Flower',
+                        'Flowers',
                         'Pot',
                         'Accessories',
                       ].map<DropdownMenuItem<String>>((String value) {
