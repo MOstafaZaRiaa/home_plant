@@ -70,11 +70,11 @@ class _SearchScreenBodyState extends State<SearchScreenBody> {
             Expanded(
               child: StreamBuilder<QuerySnapshot>(
                 stream: productName != "" && productName != null
-                    ? Firestore.instance
+                    ? FirebaseFirestore.instance
                         .collection('products')
                         .where("searchIndex", arrayContains: productName)
                         .snapshots()
-                    : Firestore.instance.collection("products").snapshots(),
+                    : FirebaseFirestore.instance.collection("products").snapshots(),
                 builder: (BuildContext context,
                     AsyncSnapshot<QuerySnapshot> snapshot) {
                   final products = snapshot.data.docs;

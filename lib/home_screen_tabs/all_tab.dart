@@ -98,68 +98,69 @@ class RowOfDifferentProducts extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: deviceHeight * 0.32,
-      child:Container(
-              height: deviceHeight * 0.37,
-              margin: EdgeInsets.all(deviceWidth * 0.01),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        categoryName,
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(
-                            builder: (context)=>categoryScreen,
-                          ));
-                        },
-                        child: Text(
-                          'See more >',
-                          style: TextStyle(
-                            color: Theme.of(context).textTheme.headline1.color,
-                          ),
-                        ),
-                      ),
-                    ],
+      height: deviceHeight * 0.33,
+      child: Container(
+        height: deviceHeight * 0.37,
+        margin: EdgeInsets.all(deviceWidth * 0.01),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  categoryName,
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => categoryScreen,
+                        ),);
+                  },
+                  child: Text(
+                    'See more >',
+                    style: TextStyle(
+                      color: Theme.of(context).textTheme.headline1.color,
+                    ),
                   ),
-                  StreamBuilder(
-                    stream: stream,
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
-                      final products = snapshot.data.docs;
-                      return Container(
-                        height: deviceHeight * 0.24,
-                        width: deviceWidth * 0.3,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: products.length,
-                          itemBuilder: (BuildContext context, int index) =>
-                              ProductItem(
-                                productName: products[index]['productName'],
-                                productPrice: products[index]['productPrice'],
-                                productImagePath: products[index]['imagePath'],
-                                productId: products[index]['productId'],
-                                productDescription: products[index]['productDescription'],
-                                productKind: products[index]['productKind'],
-                              ),
-                        ),
-                      );
-                    }
-                  ),
-                ],
-              ),
-            )
-
+                ),
+              ],
+            ),
+            StreamBuilder(
+                stream: stream,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  final products = snapshot.data.docs;
+                  return Container(
+                    height: deviceHeight * 0.24,
+                    width: deviceWidth * 0.3,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: products.length,
+                      itemBuilder: (BuildContext context, int index) =>
+                          ProductItem(
+                        productName: products[index]['productName'],
+                        productPrice: products[index]['productPrice'],
+                        productImagePath: products[index]['imagePath'],
+                        productId: products[index]['productId'],
+                        productDescription: products[index]
+                            ['productDescription'],
+                        productKind: products[index]['productKind'],
+                      ),
+                    ),
+                  );
+                }),
+          ],
+        ),
+      ),
     );
   }
 }

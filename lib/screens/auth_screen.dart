@@ -36,6 +36,9 @@ class _AuthScreenState extends State<AuthScreen> {
           backgroundColor: Theme.of(ctx).errorColor,
         ),
       );
+      setState(() {
+        _isLoading=false;
+      });
     }else {
 
       UserCredential userCredential;
@@ -90,6 +93,9 @@ class _AuthScreenState extends State<AuthScreen> {
 
       }
     }
+    setState(() {
+      _isLoading=false;
+    });
   }
 
   Widget build(BuildContext context) {

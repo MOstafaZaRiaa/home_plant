@@ -15,6 +15,7 @@ class ProfileScreen extends StatefulWidget {
     this.userEmail,
     this.user,
   });
+
   final String userName;
   final String imageUrl;
   final String userEmail;
@@ -27,7 +28,8 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
   static const userDummyImage = 'dummy450x450.jpg';
-  File newPickedImage;
+  PickedFile newPickedImage;
+  var imageFile;
   String newEmail;
   String newUsername;
   String newPassword;
@@ -47,18 +49,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Future<void> updateUserImage(BuildContext ctx) async {
-    newPickedImage = await ImagePicker.pickImage(
+    newPickedImage = await ImagePicker.platform.pickImage(
       source: ImageSource.gallery,
       imageQuality: 100,
       maxWidth: 300,
     );
+    imageFile = File(newPickedImage.path);
     try {
       //upload user image to firestorage server
       final ref = FirebaseStorage.instance
           .ref()
           .child('user_image')
           .child(widget.user.uid + '.jpg');
-      await ref.putFile(newPickedImage);
+      await ref.putFile(imageFile);
 
       //get the link of uoloaded image
       final userImageLink = await ref.fullPath;
@@ -141,131 +144,133 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ],
       ),
-       body: SingleChildScrollView(
-                    child: Form(
-                      key: _formKey,
-                      child: Column(
-                        children: [
-                          Stack(
-                            children: [
-                              Container(
-                                height: 300,
-                                width: double.infinity,
-                                child: Hero(
-                                  tag: 'userImage',
-                                  child: Container(
-                                    height: 180,
-                                    width: double.infinity,
-                                    child:newPickedImage==null?
-                                    Image(image:FirebaseImage(
-                                      'gs://home-plant.appspot.com/${widget.imageUrl}',
-                                    ),fit: BoxFit.cover,):Image(image:FileImage(newPickedImage),fit: BoxFit.cover,)
+      body: SingleChildScrollView(
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              Stack(
+                children: [
+                  Container(
+                    height: 300,
+                    width: double.infinity,
+                    child: Hero(
+                      tag: 'userImage',
+                      child: Container(
+                          height: 180,
+                          width: double.infinity,
+                          child: newPickedImage == null
+                              ? Image(
+                                  image: FirebaseImage(
+                                    'gs://home-plant.appspot.com/${widget.imageUrl}',
                                   ),
-                                ),
-                              ),
-                              Positioned(
-                                top: 10,
-                                right: 15,
-                                child: Column(
-                                  children: [
-                                    Builder(
-                                      builder: (BuildContext context) =>
-                                          IconButton(
-                                        icon: Icon(
-                                          Icons.camera_alt,
-                                          size: 40,
-                                          color: Colors.black,
-                                        ),
-                                        onPressed: () =>
-                                            updateUserImage(context),
-                                      ),
-                                    ),
-                                    Builder(
-                                      builder: (context) => IconButton(
-                                        icon: Icon(
-                                          Icons.delete,
-                                          size: 40,
-                                          color: Theme.of(context).errorColor,
-                                        ),
-                                        onPressed: () =>
-                                            deleteUserImage(context),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Container(
-                            margin: EdgeInsets.symmetric(
-                              horizontal: 15,
-                            ),
-                            child: TextFormField(
-                              maxLength: 22,
-                              textInputAction: TextInputAction.next,
-                              initialValue: widget.userName,
-                              decoration: InputDecoration(
-                                labelText: 'username',
-                              ),
-                              onSaved: (value) {
-                                newUsername = value;
-                              },
-                              validator: (value) {
-                                if (value.isEmpty || value.length < 4) {
-                                  return 'Username should be more than 4 characters';
-                                }
-                                return null;
-                              },
-                            ),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Container(
-                            margin: EdgeInsets.symmetric(
-                              horizontal: 15,
-                            ),
-                            child: TextFormField(
-                              decoration: InputDecoration(
-                                labelText: 'email',
-                              ),
-                              onSaved: (value) {
-                                newEmail = value;
-                              },
-                              validator: (value) {
-                                if (value.isEmpty || !value.contains('@')) {
-                                  return 'Please enter vaild email';
-                                }
-                                return null;
-                              },
-                              initialValue: widget.userEmail,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          ListTile(
-                            title: Text(
-                              'Change my password',
-                              style: TextStyle(
-                                  color: Theme.of(context).primaryColor),
-                            ),
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (ctx) => ChangePasswordScreen(),
-                                ),
-                              );
-                            },
-                          ),
-                        ],
-                      ),
+                                  fit: BoxFit.cover,
+                                )
+                              : Image(
+                                  image: FileImage(imageFile),
+                                  fit: BoxFit.cover,
+                                )),
                     ),
                   ),
+                  Positioned(
+                    top: 10,
+                    right: 15,
+                    child: Column(
+                      children: [
+                        Builder(
+                          builder: (BuildContext context) => IconButton(
+                            icon: Icon(
+                              Icons.camera_alt,
+                              size: 40,
+                              color: Colors.black,
+                            ),
+                            onPressed: () => updateUserImage(context),
+                          ),
+                        ),
+                        Builder(
+                          builder: (context) => IconButton(
+                            icon: Icon(
+                              Icons.delete,
+                              size: 40,
+                              color: Theme.of(context).errorColor,
+                            ),
+                            onPressed: () => deleteUserImage(context),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(
+                  horizontal: 15,
+                ),
+                child: TextFormField(
+                  maxLength: 22,
+                  textInputAction: TextInputAction.next,
+                  initialValue: widget.userName,
+                  decoration: InputDecoration(
+                    labelText: 'username',
+                  ),
+                  onSaved: (value) {
+                    newUsername = value;
+                  },
+                  validator: (value) {
+                    if (value.isEmpty || value.length < 4) {
+                      return 'Username should be more than 4 characters';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(
+                  horizontal: 15,
+                ),
+                child: TextFormField(
+                  decoration: InputDecoration(
+                    labelText: 'email',
+                  ),
+                  onSaved: (value) {
+                    newEmail = value;
+                  },
+                  validator: (value) {
+                    if (value.isEmpty || !value.contains('@')) {
+                      return 'Please enter vaild email';
+                    }
+                    return null;
+                  },
+                  initialValue: widget.userEmail,
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              ListTile(
+                title: Text(
+                  'Change my password',
+                  style: TextStyle(color: Theme.of(context).primaryColor),
+                ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (ctx) => ChangePasswordScreen(),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

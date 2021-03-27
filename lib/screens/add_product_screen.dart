@@ -15,7 +15,8 @@ class AddProductScreen extends StatefulWidget {
 }
 
 class _AddProductScreenState extends State<AddProductScreen> {
-  File newPickedImage;
+  PickedFile newPickedImage;
+  var imageFile;
   User user = FirebaseAuth.instance.currentUser;
   final _formKey = GlobalKey<FormState>();
 
@@ -28,11 +29,12 @@ class _AddProductScreenState extends State<AddProductScreen> {
   final productId = MinId.getId();
 
   Future<void> setProductImage(BuildContext ctx) async {
-    newPickedImage = await ImagePicker.pickImage(
+    newPickedImage = await ImagePicker.platform.pickImage(
       source: ImageSource.gallery,
       imageQuality: 100,
       maxWidth: 500,
-    );
+    ) ;
+    imageFile = File(newPickedImage.path);
     setState(() {
 
     });
@@ -44,7 +46,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
           .ref()
           .child('product_image')
           .child(productId + '.jpg');
-      await ref.putFile(newPickedImage);
+      await ref.putFile(imageFile);
       // get the link of uoloaded image
       final productImagePath = await ref.fullPath;
       setState(() {
@@ -115,10 +117,10 @@ class _AddProductScreenState extends State<AddProductScreen> {
                     Container(
                       height: deviceHeight * 0.3,
                       width: double.infinity,
-                      child: newPickedImage == null
+                      child: imageFile == null
                           ? Image.asset('assets/images/plant_outline_dark.png')
                           : Image(
-                              image: FileImage(newPickedImage),
+                              image: FileImage(imageFile),
                             ),
                     ),
                     Positioned(

@@ -31,7 +31,8 @@ class EditProductScreen extends StatefulWidget {
 }
 
 class _EditProductScreenState extends State<EditProductScreen> {
-  File newPickedImage;
+  PickedFile newPickedImage;
+  var imageFile;
   User user = FirebaseAuth.instance.currentUser;
   final _formKey = GlobalKey<FormState>();
 
@@ -49,11 +50,12 @@ class _EditProductScreenState extends State<EditProductScreen> {
   }
 
   Future<void> setProductImage(BuildContext ctx) async {
-    newPickedImage = await ImagePicker.pickImage(
+    newPickedImage = await ImagePicker.platform.pickImage(
       source: ImageSource.gallery,
       imageQuality: 100,
       maxWidth: 500,
     );
+    imageFile = File(newPickedImage.path);
     setState(() {
       isEditing=true;
     });
@@ -67,7 +69,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
           .ref()
           .child('product_image')
           .child(user.uid + '.jpg');
-      await ref.putFile(newPickedImage);
+      await ref.putFile(imageFile);
       // get the link of uoloaded image
       final productImagePath = ref.fullPath;
       setState(() {
@@ -169,7 +171,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       width: double.infinity,
                       child: isEditing
                           ? Image(
-                              image: FileImage(newPickedImage),
+                              image: FileImage(imageFile),
                             ):Image(image:FirebaseImage('gs://home-plant.appspot.com/${widget.productImagePath}',), ),
                     ),
                     Positioned(
