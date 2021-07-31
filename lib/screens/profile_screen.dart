@@ -63,7 +63,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           .child(widget.user.uid + '.jpg');
       await ref.putFile(imageFile);
 
-      //get the link of uoloaded image
+      //get the link of uploaded image
       final userImageLink = await ref.fullPath;
 
       //update link of user image in firestore
